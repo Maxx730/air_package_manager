@@ -6,6 +6,8 @@ onready var _cash_indicator = get_node("shade/top/Panel/cash/cash_amount")
 onready var _aircraft_count = get_node("vertical/shadow/border/container/content/aircraft_count")
 onready var _aircraft_name = get_node("vertical/shadow/border/container/content/vertical/aircraft_name")
 onready var _aircraft_location = get_node("vertical/shadow/border/container/content/vertical/aircraft_location")
+onready var _cancel = get_node("cancel")
+
 
 var _fleet_idx = 0
 
@@ -35,7 +37,8 @@ func _next_aircraft():
 		_fleet_idx = 0
 	else:
 		_fleet_idx += 1
-		
+	
+	_globals._plane = _globals._fleet[_fleet_idx]
 	_hide_all_aircraft()
 	_show_current_aircraft()
 	_set_aircraft_info()
@@ -69,3 +72,16 @@ func _set_aircraft_info():
 		
 	if _aircraft_location != null:
 		_aircraft_location.text = _globals._locations[_globals._fleet[_fleet_idx]._location]._location_name
+
+func _open_locations():
+	_globals._map._hide_screens()
+	var _locat = _globals._locations[_globals._fleet[_fleet_idx]._location]
+	_ui._switcher.visible = false
+	_ui._cancel.visible = true
+	_globals._map._show_screen(1)
+	_globals._main_camera._target = _locat
+	for loc in _globals._locations:
+		loc._stop_button.visible = true
+	_locat._stop_button.visible = false
+	for _aircraft in _globals._fleet:
+		_aircraft.visible = false

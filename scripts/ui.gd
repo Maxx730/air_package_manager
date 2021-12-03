@@ -7,6 +7,7 @@ onready var _location = get_node("/root/world/ui/location")
 onready var _shop = get_node("/root/world/ui/shop")
 onready var _takeoff = get_node("/root/world/ui/takeoff")
 onready var _shade = get_node("/root/world/ui/shade")
+onready var _cancel = get_node("/root/world/ui/dashboard/cancel")
 
 func _ready():
 	_init_close_buttons()

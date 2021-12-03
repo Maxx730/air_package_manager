@@ -2,11 +2,18 @@ extends Node2D
 
 export(String) var _location_name = 'Location Name'
 
+signal _location_select
+
+onready var _stop_button = get_node("click_area")
+
+var _add_sprite = preload("res://assets/sprites/add_loc_sprite.png")
+var _remove_sprite = preload("res://assets/sprites/remove_loc_sprite.png")
 var _package_instance = preload('res://prefabs/package.tscn')
 var _packages : Array = []
 
 func _ready():
-	$info/title.text = _location_name
+	$label.text = _location_name
+	
 
 func _landing_zone_entered(area):
 	if area.get_parent().name == 'plane' and area.get_parent()._destination == self:
@@ -38,4 +45,17 @@ func _get_planes_landed():
 		if _globals._locations[_plane._location] == self:
 			_amount += 1
 			
-	$info/horizontal/plane_count/count.text = String(_amount)
+func _input(event):
+	if event is InputEventMouseButton:
+		if event.button_index == BUTTON_LEFT and event.pressed:
+			var _col : CollisionShape2D = $click_area/collider
+			if $click_area/add_stop.get_global_rect().has_point(get_global_mouse_position()):
+				if _globals._path.find(self) == -1:
+					_globals._path.append(self)
+					$click_area/add_stop.texture_normal = _remove_sprite
+				else:
+					$click_area/add_stop.texture_normal = _add_sprite
+					_globals._path.remove(_globals._path.find(self))
+					
+				emit_signal("_location_select")
+

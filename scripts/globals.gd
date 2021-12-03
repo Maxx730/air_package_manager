@@ -1,5 +1,13 @@
 extends Node
 
+enum SCREENS {
+	SHOP,
+	MAP,
+	RUNWAY,
+	SKY,
+	CARGO
+}
+
 var _available : Array = []
 var _fleet : Array = []
 var _plane : Node2D = null
@@ -10,6 +18,7 @@ var _current_location : Node2D = null
 var _main_camera : Camera2D = null
 var _world : Node2D = null
 var _map : Node2D = null
+var _path : Array = []
 
 #scenes
 var _plane_instance = preload("res://prefabs/plane.tscn")
@@ -50,7 +59,8 @@ func _load_world():
 			_ui._dashboard._show_current_aircraft()
 			_ui._dashboard._set_aircraft_info()
 	else:
-		_ui._dashboard._switcher.visible = false
+		#_ui._dashboard._switcher.visible = false
+		pass
 		
 	_map._set_lighting()
 
