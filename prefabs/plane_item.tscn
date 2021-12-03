@@ -1,0 +1,52 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://scripts/plane_item.gd" type="Script" id=1]
+
+[node name="plane_item" type="MarginContainer"]
+margin_right = 200.0
+margin_bottom = 32.0
+size_flags_horizontal = 3
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="horizontal" type="HBoxContainer" parent="."]
+margin_right = 200.0
+margin_bottom = 50.0
+size_flags_horizontal = 3
+
+[node name="preview" type="Sprite" parent="horizontal"]
+
+[node name="vertical" type="VBoxContainer" parent="horizontal"]
+margin_right = 126.0
+margin_bottom = 50.0
+size_flags_horizontal = 3
+
+[node name="name" type="Label" parent="horizontal/vertical"]
+margin_right = 126.0
+margin_bottom = 14.0
+text = "Plane Name"
+clip_text = true
+
+[node name="price" type="Label" parent="horizontal/vertical"]
+margin_top = 18.0
+margin_right = 126.0
+margin_bottom = 32.0
+text = "$1000"
+clip_text = true
+
+[node name="location" type="Label" parent="horizontal/vertical"]
+margin_top = 36.0
+margin_right = 126.0
+margin_bottom = 50.0
+text = "Location"
+clip_text = true
+
+[node name="purchase" type="Button" parent="horizontal"]
+margin_left = 130.0
+margin_right = 200.0
+margin_bottom = 50.0
+text = "Purchase"
+
+[connection signal="pressed" from="horizontal/purchase" to="." method="_on_purchase"]

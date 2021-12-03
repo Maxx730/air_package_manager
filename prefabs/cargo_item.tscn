@@ -1,0 +1,52 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://scripts/cargo_item.gd" type="Script" id=1]
+
+[node name="cargo_item" type="MarginContainer"]
+margin_left = 10.0
+margin_top = 8.0
+margin_right = 165.0
+margin_bottom = 58.0
+size_flags_horizontal = 3
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="horizontal" type="HBoxContainer" parent="."]
+margin_right = 155.0
+margin_bottom = 50.0
+size_flags_horizontal = 3
+
+[node name="icon" type="Sprite" parent="horizontal"]
+
+[node name="vertical" type="VBoxContainer" parent="horizontal"]
+margin_right = 93.0
+margin_bottom = 50.0
+size_flags_horizontal = 3
+
+[node name="package_name" type="Label" parent="horizontal/vertical"]
+margin_right = 93.0
+margin_bottom = 14.0
+text = "Package Name"
+
+[node name="package_destination" type="Label" parent="horizontal/vertical"]
+margin_top = 18.0
+margin_right = 93.0
+margin_bottom = 32.0
+text = "Destination"
+
+[node name="package_weight" type="Label" parent="horizontal/vertical"]
+margin_top = 36.0
+margin_right = 93.0
+margin_bottom = 50.0
+text = "2LBS"
+
+[node name="deliver_button" type="Button" parent="horizontal"]
+margin_left = 97.0
+margin_right = 155.0
+margin_bottom = 50.0
+disabled = true
+text = "Deliver"
+
+[connection signal="pressed" from="horizontal/deliver_button" to="." method="_deliver_package"]
