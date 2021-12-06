@@ -1,4 +1,4 @@
-[gd_scene load_steps=100 format=2]
+[gd_scene load_steps=115 format=2]
 
 [ext_resource path="res://assets/tileset/Tileset_Arranged.png" type="Texture" id=1]
 [ext_resource path="res://prefabs/location.tscn" type="PackedScene" id=2]
@@ -45,6 +45,13 @@
 [ext_resource path="res://assets/sprites/fuel.png" type="Texture" id=43]
 [ext_resource path="res://assets/sprites/shadow_outline.png" type="Texture" id=44]
 [ext_resource path="res://scripts/locations.gd" type="Script" id=45]
+[ext_resource path="res://assets/sprites/cancel_button.png" type="Texture" id=46]
+[ext_resource path="res://assets/sprites/x_icon.png" type="Texture" id=47]
+[ext_resource path="res://assets/sprites/cancel_button_pressed.png" type="Texture" id=48]
+[ext_resource path="res://assets/sprites/check_icon.png" type="Texture" id=49]
+[ext_resource path="res://assets/sprites/positive_button.png" type="Texture" id=50]
+[ext_resource path="res://assets/sprites/positive_button_pressed.png" type="Texture" id=51]
+[ext_resource path="res://assets/sprites/transit.png" type="Texture" id=52]
 
 [sub_resource type="Gradient" id=17]
 offsets = PoolRealArray( 0, 0, 0, 0.674556, 1 )
@@ -236,6 +243,51 @@ bg_color = Color( 0, 0, 0, 0.647059 )
 [sub_resource type="DynamicFont" id=13]
 extra_spacing_top = -3
 font_data = ExtResource( 23 )
+
+[sub_resource type="DynamicFont" id=76]
+extra_spacing_top = -1
+extra_spacing_bottom = -4
+font_data = ExtResource( 33 )
+
+[sub_resource type="StyleBoxTexture" id=77]
+texture = ExtResource( 48 )
+region_rect = Rect2( 0, 0, 80, 32 )
+margin_left = 8.0
+margin_right = 11.0
+margin_top = 8.0
+margin_bottom = 11.0
+
+[sub_resource type="StyleBoxEmpty" id=78]
+
+[sub_resource type="StyleBoxTexture" id=75]
+texture = ExtResource( 46 )
+region_rect = Rect2( 0, 0, 80, 32 )
+margin_left = 8.0
+margin_right = 12.0
+margin_top = 8.0
+margin_bottom = 11.0
+
+[sub_resource type="DynamicFont" id=80]
+extra_spacing_top = 3
+font_data = ExtResource( 33 )
+
+[sub_resource type="StyleBoxTexture" id=81]
+texture = ExtResource( 51 )
+region_rect = Rect2( 0, 0, 80, 32 )
+margin_left = 8.0
+margin_right = 12.0
+margin_top = 8.0
+margin_bottom = 11.0
+
+[sub_resource type="StyleBoxEmpty" id=82]
+
+[sub_resource type="StyleBoxTexture" id=79]
+texture = ExtResource( 50 )
+region_rect = Rect2( 0, 0, 80, 32 )
+margin_left = 8.0
+margin_right = 13.0
+margin_top = 8.0
+margin_bottom = 11.0
 
 [sub_resource type="DynamicFont" id=12]
 font_data = ExtResource( 6 )
@@ -477,13 +529,14 @@ script = ExtResource( 13 )
 _daytime_color = SubResource( 17 )
 
 [node name="runway" type="Node2D" parent="screens"]
+visible = false
 
 [node name="ground" type="TextureRect" parent="screens/runway"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -175.0
+margin_left = -180.0
 margin_top = -768.0
-margin_right = 175.0
+margin_right = 170.0
 margin_bottom = 523.0
 texture = ExtResource( 29 )
 stretch_mode = 2
@@ -492,9 +545,9 @@ __meta__ = {
 }
 
 [node name="dashed" type="TextureRect" parent="screens/runway"]
-margin_left = -1.0
+margin_left = -50.0
 margin_top = -584.0
-margin_right = 3.0
+margin_right = -46.0
 margin_bottom = 366.0
 texture = ExtResource( 25 )
 stretch_mode = 2
@@ -503,7 +556,7 @@ __meta__ = {
 }
 
 [node name="crosswalk" type="Sprite" parent="screens/runway"]
-position = Vector2( 0, 166 )
+position = Vector2( -49, 166 )
 texture = ExtResource( 24 )
 
 [node name="shade" type="CanvasModulate" parent="screens"]
@@ -530,6 +583,20 @@ margin_right = 5942.0
 margin_bottom = 5551.0
 texture = ExtResource( 16 )
 stretch_mode = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="transit" type="Node2D" parent="screens"]
+
+[node name="background" type="TextureRect" parent="screens/transit"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -160.0
+margin_top = -249.0
+margin_right = 160.0
+margin_bottom = 1351.0
+texture = ExtResource( 52 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -694,29 +761,50 @@ margin_right = 64.0
 margin_bottom = 21.0
 texture_normal = ExtResource( 11 )
 
-[node name="cancel" type="NinePatchRect" parent="ui/dashboard"]
-visible = false
-margin_top = 416.0
-margin_right = 320.0
+[node name="global_actions" type="HBoxContainer" parent="ui/dashboard"]
+margin_left = 119.0
+margin_top = 412.0
+margin_right = 200.0
 margin_bottom = 448.0
-rect_min_size = Vector2( 0, 32 )
+size_flags_horizontal = 4
 size_flags_vertical = 8
 
-[node name="cancel_button" type="Button" parent="ui/dashboard/cancel"]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -30.5
-margin_top = -10.0
-margin_right = 30.5
-margin_bottom = 10.0
+[node name="cancel_button" type="Button" parent="ui/dashboard/global_actions"]
+margin_right = 81.0
+margin_bottom = 36.0
+size_flags_vertical = 0
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_fonts/font = SubResource( 76 )
+custom_styles/hover = SubResource( 77 )
+custom_styles/pressed = SubResource( 77 )
+custom_styles/focus = SubResource( 78 )
+custom_styles/normal = SubResource( 75 )
 text = "CANCEL"
+icon = ExtResource( 47 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="confirm_button" type="Button" parent="ui/dashboard/global_actions"]
+visible = false
+margin_left = 85.0
+margin_right = 184.0
+margin_bottom = 36.0
+size_flags_vertical = 0
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_fonts/font = SubResource( 80 )
+custom_styles/hover = SubResource( 81 )
+custom_styles/pressed = SubResource( 81 )
+custom_styles/focus = SubResource( 82 )
+custom_styles/normal = SubResource( 79 )
+text = " TAKE OFF"
+icon = ExtResource( 49 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="vertical" type="VBoxContainer" parent="ui/dashboard"]
+visible = false
 margin_right = 320.0
 margin_bottom = 448.0
 
@@ -1152,7 +1240,6 @@ custom_fonts/font = SubResource( 61 )
 text = "CARGO >"
 
 [node name="shop" type="MarginContainer" parent="ui"]
-visible = false
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -1249,6 +1336,22 @@ custom_styles/hover = SubResource( 48 )
 custom_styles/pressed = SubResource( 47 )
 custom_styles/focus = SubResource( 49 )
 custom_styles/normal = SubResource( 46 )
+
+[node name="TextureRect" type="TextureRect" parent="ui/shop/modal/margin/border/vertical/horizontal/close"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -8.0
+margin_top = -8.0
+margin_right = 9.0
+margin_bottom = 9.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+texture = ExtResource( 47 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="plane_list" type="MarginContainer" parent="ui/shop/modal/margin/border/vertical"]
 margin_top = 48.0
@@ -1565,7 +1668,8 @@ script = ExtResource( 8 )
 _pan_speed = 5.0
 
 [connection signal="pressed" from="ui/dashboard/shade/top/open_shop" to="ui/dashboard" method="_open_shop"]
-[connection signal="pressed" from="ui/dashboard/cancel/cancel_button" to="screens" method="_cancel_action_pressed"]
+[connection signal="pressed" from="ui/dashboard/global_actions/cancel_button" to="screens/locations" method="_cancel_departure"]
+[connection signal="pressed" from="ui/dashboard/global_actions/confirm_button" to="ui/dashboard" method="_aircraft_depart"]
 [connection signal="pressed" from="ui/dashboard/vertical/shadow/border/container/switcher/prev_aircraft" to="ui/dashboard" method="_previous_aircraft"]
 [connection signal="pressed" from="ui/dashboard/vertical/shadow/border/container/switcher/horizontal/open_location" to="ui/dashboard" method="_open_location"]
 [connection signal="pressed" from="ui/dashboard/vertical/shadow/border/container/switcher/horizontal/depart" to="ui/dashboard" method="_open_locations"]

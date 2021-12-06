@@ -31,6 +31,7 @@ func _previous_aircraft():
 	_hide_all_aircraft()
 	_show_current_aircraft()
 	_set_aircraft_info()
+	_globals._map._determine_aircraft_scene(_globals._plane._state)
 	
 func _next_aircraft():
 	if _fleet_idx >= (_globals._fleet.size() - 1):
@@ -38,16 +39,17 @@ func _next_aircraft():
 	else:
 		_fleet_idx += 1
 	
-	_globals._plane = _globals._fleet[_fleet_idx]
 	_hide_all_aircraft()
 	_show_current_aircraft()
 	_set_aircraft_info()
+	_globals._map._determine_aircraft_scene(_globals._plane._state)
 		
 func _hide_all_aircraft():
 	for _aircraft in _globals._fleet:
 		_aircraft.visible = false
 
 func _show_current_aircraft():
+	_globals._plane = _globals._fleet[_fleet_idx]
 	_globals._fleet[_fleet_idx].visible = true
 
 func _set_switcher_info(name, state):
@@ -74,14 +76,22 @@ func _set_aircraft_info():
 		_aircraft_location.text = _globals._locations[_globals._fleet[_fleet_idx]._location]._location_name
 
 func _open_locations():
-	_globals._map._hide_screens()
+	#first load the correct screen and ui 
+	_globals._plane._state = _globals.PLANE_STATE.DEPARTING
+	_globals._map._determine_aircraft_scene(_globals._plane._state)
+	_ui._determine_ui_actions(_globals._plane._state)
+
 	var _locat = _globals._locations[_globals._fleet[_fleet_idx]._location]
-	_ui._switcher.visible = false
-	_ui._cancel.visible = true
-	_globals._map._show_screen(1)
 	_globals._main_camera._target = _locat
+	
 	for loc in _globals._locations:
 		loc._stop_button.visible = true
+		loc._texture_button.texture_normal = loc._add_sprite
 	_locat._stop_button.visible = false
 	for _aircraft in _globals._fleet:
 		_aircraft.visible = false
+
+func _aircraft_depart():
+	_globals._plane._state = _globals.PLANE_STATE.IN_TRANSIT
+	_globals._map._determine_aircraft_scene(_globals._plane._state)
+	_ui._determine_ui_actions(_globals._plane._state)

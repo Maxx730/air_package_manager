@@ -8,6 +8,12 @@ enum SCREENS {
 	CARGO
 }
 
+enum PLANE_STATE {
+	LANDED,
+	DEPARTING,
+	IN_TRANSIT,
+}
+
 var _available : Array = []
 var _fleet : Array = []
 var _plane : Node2D = null
@@ -54,10 +60,11 @@ func _load_world():
 			_ui._dashboard._update_global_info(0)
 			_ui._shop._update_inventory(0)
 			_update_locations()
-			
+			_map._determine_aircraft_scene(_plane._state)
 			_ui._dashboard._hide_all_aircraft()
 			_ui._dashboard._show_current_aircraft()
 			_ui._dashboard._set_aircraft_info()
+			_ui._determine_ui_actions(_globals._plane._state)
 	else:
 		#_ui._dashboard._switcher.visible = false
 		pass

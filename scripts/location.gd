@@ -5,6 +5,7 @@ export(String) var _location_name = 'Location Name'
 signal _location_select
 
 onready var _stop_button = get_node("click_area")
+onready var _texture_button = get_node("click_area/add_stop")
 
 var _add_sprite = preload("res://assets/sprites/add_loc_sprite.png")
 var _remove_sprite = preload("res://assets/sprites/remove_loc_sprite.png")
@@ -48,13 +49,12 @@ func _get_planes_landed():
 func _input(event):
 	if event is InputEventMouseButton:
 		if event.button_index == BUTTON_LEFT and event.pressed:
-			var _col : CollisionShape2D = $click_area/collider
-			if $click_area/add_stop.get_global_rect().has_point(get_global_mouse_position()):
+			if _texture_button.get_global_rect().has_point(get_global_mouse_position()):
 				if _globals._path.find(self) == -1:
 					_globals._path.append(self)
-					$click_area/add_stop.texture_normal = _remove_sprite
+					_texture_button.texture_normal = _remove_sprite
 				else:
-					$click_area/add_stop.texture_normal = _add_sprite
+					_texture_button.texture_normal = _add_sprite
 					_globals._path.remove(_globals._path.find(self))
 					
 				emit_signal("_location_select")

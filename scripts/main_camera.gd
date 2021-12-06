@@ -11,3 +11,8 @@ func _ready():
 func _process(delta):
 	if _target != null and !_panning:
 		position = lerp(position, _target.position, delta)
+
+func _reset():
+	_target = null
+	_panning = false
+	position = Vector2.ZERO

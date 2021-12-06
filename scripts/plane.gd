@@ -6,12 +6,6 @@ enum PLANE_CLASS {
 	CLASS_THREE
 }
 
-enum PLANE_STATE {
-	LANDED,
-	IN_TRANSIT,
-	FUELING
-}
-
 var _sprites = [
 	preload("res://assets/sprites/aircraft/cesna_generic.png"),
 	preload("res://assets/sprites/aircraft/airbus_generic.png"),
@@ -21,7 +15,7 @@ var _sprites = [
 
 export(String) var _title : String = 'Boeing 777F'
 var _class : int = PLANE_CLASS.CLASS_ONE
-var _state : int = PLANE_STATE.LANDED
+var _state : int = _globals.PLANE_STATE.LANDED
 var _destination : Node2D = null
 var _max_speed : float = 100.0
 var _weight_capactiy = 100.0
@@ -33,11 +27,7 @@ func _ready():
 	pass
 
 func _process(delta):
-	match _state:
-		PLANE_STATE.LANDED:
-			pass
-		PLANE_STATE.IN_TRANSIT:
-			pass
+	pass
 
 func _transit_animations(delta):
 	_sway()

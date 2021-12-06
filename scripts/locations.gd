@@ -31,3 +31,16 @@ func _draw_trip():
 	$trip_line.add_point(_globals._locations[_globals._plane._location].position)
 	for _location in _globals._path:
 		$trip_line.add_point(_location.position)
+		
+	_determine_actions()
+
+func _determine_actions():
+	if _globals._path.size() > 0:
+		_ui._confirm.visible = true
+	else:
+		_ui._confirm.visible = false
+
+func _cancel_departure():
+	_globals._plane._state = _globals.PLANE_STATE.LANDED
+	_globals._map._determine_aircraft_scene(_globals._plane._state)
+	_ui._determine_ui_actions(_globals._plane._state)

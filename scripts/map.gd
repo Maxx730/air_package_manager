@@ -4,7 +4,8 @@ export(Gradient) var _daytime_color : Gradient
 
 onready var _screens = [
 	get_node("runway"),
-	get_node("locations")
+	get_node("locations"),
+	get_node("transit")
 ]
 
 func _enter_tree():
@@ -32,7 +33,23 @@ func _cancel_action_pressed():
 	$locations/trip_line.clear_points()
 	_globals._plane.visible = true
 	_ui._switcher.visible = true
-	_ui._cancel.visible = false
+	_ui._global_actions.visible = false
 	_globals._main_camera._target = null
 	_globals._main_camera._panning = false
 	_globals._main_camera.position = Vector2.ZERO
+
+func _determine_aircraft_scene(state):
+	_hide_screens()
+	
+	match state:
+		_globals.PLANE_STATE.LANDED:
+			_globals._main_camera._reset()
+			_ui._dashboard._show_current_aircraft()
+			_show_screen(0)
+		_globals.PLANE_STATE.IN_TRANSIT:
+			_globals._main_camera._reset()
+			_ui._dashboard._show_current_aircraft()
+			_show_screen(2)
+		_globals.PLANE_STATE.DEPARTING:
+			_globals._main_camera._reset()
+			_show_screen(1)
