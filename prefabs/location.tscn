@@ -41,9 +41,6 @@ shape = SubResource( 3 )
 [node name="collider" type="CollisionShape2D" parent="landing_zone"]
 shape = SubResource( 1 )
 
-[node name="package_timer" type="Timer" parent="."]
-autostart = true
-
 [node name="pin" type="Sprite" parent="."]
 texture = ExtResource( 1 )
 
@@ -67,4 +64,3 @@ __meta__ = {
 [connection signal="input_event" from="click_area" to="." method="_add_location"]
 [connection signal="area_entered" from="landing_zone" to="." method="_landing_zone_entered"]
 [connection signal="area_exited" from="landing_zone" to="." method="_left_landing_zone"]
-[connection signal="timeout" from="package_timer" to="." method="_generate_package"]

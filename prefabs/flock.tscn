@@ -1,0 +1,63 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://scripts/flock.gd" type="Script" id=1]
+[ext_resource path="res://scripts/seagull.gd" type="Script" id=2]
+[ext_resource path="res://assets/sprites/seagull.png" type="Texture" id=3]
+
+[sub_resource type="AtlasTexture" id=105]
+atlas = ExtResource( 3 )
+region = Rect2( 0, 0, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=106]
+atlas = ExtResource( 3 )
+region = Rect2( 16, 0, 16, 16 )
+
+[sub_resource type="SpriteFrames" id=107]
+animations = [ {
+"frames": [ SubResource( 105 ), SubResource( 106 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[node name="flock" type="Node2D"]
+position = Vector2( -56, -295 )
+script = ExtResource( 1 )
+
+[node name="seagull" type="AnimatedSprite" parent="."]
+frames = SubResource( 107 )
+script = ExtResource( 2 )
+
+[node name="flapper" type="Timer" parent="seagull"]
+one_shot = true
+
+[node name="seagull2" type="AnimatedSprite" parent="."]
+position = Vector2( 21, 17 )
+frames = SubResource( 107 )
+script = ExtResource( 2 )
+
+[node name="flapper" type="Timer" parent="seagull2"]
+one_shot = true
+
+[node name="seagull3" type="AnimatedSprite" parent="."]
+position = Vector2( -13, 33 )
+frames = SubResource( 107 )
+script = ExtResource( 2 )
+
+[node name="flapper" type="Timer" parent="seagull3"]
+one_shot = true
+
+[node name="visibility" type="VisibilityNotifier2D" parent="."]
+
+[node name="respawn_timer" type="Timer" parent="."]
+wait_time = 10.0
+one_shot = true
+
+[connection signal="animation_finished" from="seagull" to="seagull" method="_flap_complete"]
+[connection signal="timeout" from="seagull/flapper" to="seagull" method="_on_flapper_timeout"]
+[connection signal="animation_finished" from="seagull2" to="seagull2" method="_flap_complete"]
+[connection signal="timeout" from="seagull2/flapper" to="seagull2" method="_on_flapper_timeout"]
+[connection signal="animation_finished" from="seagull3" to="seagull3" method="_flap_complete"]
+[connection signal="timeout" from="seagull3/flapper" to="seagull3" method="_on_flapper_timeout"]
+[connection signal="screen_exited" from="visibility" to="." method="_screen_exited"]
+[connection signal="timeout" from="respawn_timer" to="." method="_respawn"]

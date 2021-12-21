@@ -29,13 +29,13 @@ func _input(event):
 func _draw_trip():
 	$trip_line.clear_points()
 	$trip_line.add_point(_globals._locations[_globals._plane._location].position)
-	for _location in _globals._path:
+	for _location in _globals._plane._stops:
 		$trip_line.add_point(_location.position)
 		
 	_determine_actions()
 
 func _determine_actions():
-	if _globals._path.size() > 0:
+	if _globals._plane._stops.size() > 0:
 		_ui._confirm.visible = true
 	else:
 		_ui._confirm.visible = false

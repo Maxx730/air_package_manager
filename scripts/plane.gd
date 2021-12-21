@@ -13,45 +13,97 @@ var _sprites = [
 	preload("res://assets/sprites/aircraft/skymaster_generic.png")
 ]
 
+var _persist = {
+	"title": "Aircraft Name",
+	"file": filename,
+	"state": _globals.PLANE_STATE.LANDED,
+	"cargo": [],
+	"location": -1,
+	"sprite": null,
+	"stops": [],
+	"arrival": 0,
+	"position": {
+		"x": 0,
+		"y": 0
+	},
+	"departure_time": null
+}
+
+var _cargo_inst = preload("res://prefabs/cargo.tscn")
+
+#EXPORTED VALUES
 export(String) var _title : String = 'Boeing 777F'
+export(float) var _max_speed : float = 100.0
+export(float) var _capacity : float = 50.0
+export(float) var _tank : float = 50000.0
+export(float) var _efficiency : float = 12.0
+
+#CONSTANTS
 var _class : int = PLANE_CLASS.CLASS_ONE
 var _state : int = _globals.PLANE_STATE.LANDED
-var _destination : Node2D = null
-var _max_speed : float = 100.0
-var _weight_capactiy = 100.0
+var _fuel : float = _tank
+
+#DELIVERY DATA
+var _length = 0 #How long will the distance to the next stop be in seconds
 var _cargo : Array = []
+var _stops = []
+var _location : int = -1
+
 var _value = 100.0
-var _location = -1
+var _departure_time = null
 
 func _ready():
-	pass
+	position.y -= 65
 
-func _process(delta):
-	pass
+func _tick():
+	if _length <= 0:
+		pass
+	else:
+		_ui._trip_time.text = _util._format_seconds(_length)
+		#_ui._to_name.text = _globals._plane._stops[0]._location_name
+		#_ui._from_name.text = _globals._locations[_globals._plane._location]._location_name
+		_length -= 1
+		_fuel -= _efficiency
+		_ui._dashboard._fuel_indicator.text = String(floor((_fuel / _tank) * 100.0)) + "%"
 
 func _transit_animations(delta):
 	_sway()
 
 func _save():
-	return {
-		"title": _title,
-		"file": filename,
-		"state": _state,
-		"cargo": _cargo,
-		"location": _location,
-		"sprite": $sprite.texture.resource_path,
-		"position": {
-			"x": position.x,
-			"y": position.y
-		}
+	_persist["title"] = _title
+	_persist["state"] = _state
+	_persist["location"] = _location
+	_persist["file"] = filename
+	_persist["sprite"] = $sprite.texture.resource_path
+	_persist["arrival"] = _length
+	
+	for _stop in _stops:
+		_persist["stops"].append(_globals._locations.find(_stop))
+	
+	for _item in _cargo:
+		_persist["cargo"].append(_item._save())
+	
+	_persist["position"] = {
+		"x": position.x,
+		"y": position.y
 	}
+	return _persist
 
 func _load(data):
 	_title = data.title
-	_cargo = data.cargo
 	_location = data.location
 	_state = data.state
+	_length = data.arrival
 	$sprite.texture = load(data.sprite)
+	
+	# load the cargo into memory
+	for _item in data.cargo:
+		var _inst = _cargo_inst.instance()
+		_inst._load(_item)
+		_cargo.append(_inst)
+	
+	for _stop in data.stops:
+		_stops.append(_globals._locations[_stop])
 
 func _get_state():
 	match _state:
@@ -76,3 +128,10 @@ func _set_lights(val):
 
 func _get_sprite_texture():
 	return $sprite.texture
+
+func _get_weight():
+	var _weight = 0
+	for _item in _cargo:
+		_weight += _item._weight
+		
+	return _weight

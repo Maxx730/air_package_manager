@@ -33,16 +33,23 @@ func _ready():
 	_weight = get_node("modal/margin/border/vertical/plane_list/content/horizontal/info/margin/horizontal/vertical/weight/weight")
 	_count = get_node("modal/margin/border/vertical/plane_list/content/horizontal/info/avail_count")
 	_purchase = get_node("modal/margin/border/vertical/actions/purchase_button")
+	
+	var _inst = _globals._aircraft[0].instance()
+	_inst._location = randi() % _globals._locations.size()
+	_globals._available.append(_inst)
+	_update_inventory(0)
 
 func _generate_available_plane():
 	randomize()
 	var _plane = _globals._plane_instance.instance()
 	_globals._available.append(_plane)
 
-func _update_inventory(override):
+func _update_inventory(override : int = 0):
 	if _globals._available.size() > 0:
 		var _idx = override if override != null else _avail_index
 		var _aircraft = _globals._available[_idx]
+		$modal/margin/border/vertical/plane_list/content/horizontal.visible = true
+		$modal/margin/border/vertical/plane_list/content/none_available.visible = false
 		if _avail_index != null:
 			if _count != null:
 				if _globals._available.size() > 0:
@@ -62,7 +69,8 @@ func _update_inventory(override):
 			if _purchase != null:
 				_purchase.disabled = _globals._cash <= _aircraft._value
 	else:
-		pass
+		$modal/margin/border/vertical/plane_list/content/horizontal.visible = false
+		$modal/margin/border/vertical/plane_list/content/none_available.visible = true
 
 func _purchase_aircraft():
 	var _aircraft = _globals._available[_avail_index]
@@ -75,17 +83,17 @@ func _purchase_aircraft():
 	_ui._dashboard._update_global_info(-(_aircraft._value))
 	_ui._dashboard._hide_all_aircraft()
 	_ui._dashboard._show_current_aircraft()
+	_ui._dashboard._determine_switcher_content()
+	_ui._dashboard._set_aircraft_info()
+	
+	if _globals._tutorial:
+		_ui._tutorial_2.visible = false
+		_ui._close_modals()
+		_ui._dashboard._shop.disabled = true
+		_ui._cargo_tutorial.visible = true
 
 func _generate_available_aircraft():
-	#only generate a certain number of available planes
-	if _globals._available.size() < _max_available:
-		#generate random values for plane here.
-		randomize()
-		var _inst = _globals._aircraft[randi() % _globals._aircraft.size()].instance()
-		_inst._location = randi() % _globals._locations.size()
-		_inst._class = clamp(randi() % 4, 1, 3)
-		_globals._available.append(_inst)
-		_update_inventory(0)
+	pass
 	
 func _next_avail():
 	if _avail_index + 1 >= _globals._available.size():
@@ -102,3 +110,9 @@ func _prev_avail():
 		_avail_index -= 1
 		
 	_update_inventory(_avail_index)
+
+func _determine_ui_elements():
+	$modal/margin/border/vertical/horizontal/close.disabled = _globals._tutorial
+	$modal/margin/border/vertical/plane_list/content/horizontal/prev_avail.disabled = _globals._tutorial
+	$modal/margin/border/vertical/plane_list/content/horizontal/next_avail.disabled = _globals._tutorial
+	$modal/margin/border/vertical/actions/purchase_button.disabled = _globals._available.size() == 0

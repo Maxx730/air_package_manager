@@ -1,11 +1,11 @@
-[gd_scene load_steps=115 format=2]
+[gd_scene load_steps=170 format=2]
 
 [ext_resource path="res://assets/tileset/Tileset_Arranged.png" type="Texture" id=1]
 [ext_resource path="res://prefabs/location.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scripts/shop.gd" type="Script" id=3]
 [ext_resource path="res://scripts/dashboard.gd" type="Script" id=4]
 [ext_resource path="res://assets/styles/action_left_pressed.tres" type="StyleBox" id=5]
-[ext_resource path="res://assets/fonts/honeyblot_caps.otf" type="DynamicFontData" id=6]
+[ext_resource path="res://assets/sprites/transit_lower.png" type="Texture" id=6]
 [ext_resource path="res://assets/sprites/cash_dash.png" type="Texture" id=7]
 [ext_resource path="res://scripts/main_camera.gd" type="Script" id=8]
 [ext_resource path="res://assets/sprites/action_left_corner.png" type="Texture" id=9]
@@ -36,13 +36,13 @@
 [ext_resource path="res://assets/sprites/plane_sprite.png" type="Texture" id=34]
 [ext_resource path="res://assets/sprites/weight_icon.png" type="Texture" id=35]
 [ext_resource path="res://assets/sprites/action_right_corner.png" type="Texture" id=36]
-[ext_resource path="res://assets/sprites/location_dialog_close.png" type="Texture" id=37]
-[ext_resource path="res://assets/sprites/location_dialog_close_pressed.png" type="Texture" id=38]
+[ext_resource path="res://assets/sprites/dialog_content_actions_lighter.png" type="Texture" id=37]
+[ext_resource path="res://assets/sprites/dialog_x.png" type="Texture" id=38]
 [ext_resource path="res://assets/sprites/dialog_content_actions_dark_topless.png" type="Texture" id=39]
 [ext_resource path="res://assets/sprites/action_right_corner_pressed.png" type="Texture" id=40]
 [ext_resource path="res://assets/sprites/actions_sides_pressed.png" type="Texture" id=41]
 [ext_resource path="res://assets/sprites/white_outline.png" type="Texture" id=42]
-[ext_resource path="res://assets/sprites/fuel.png" type="Texture" id=43]
+[ext_resource path="res://assets/sprites/dialog_content_actions_lightest.png" type="Texture" id=43]
 [ext_resource path="res://assets/sprites/shadow_outline.png" type="Texture" id=44]
 [ext_resource path="res://scripts/locations.gd" type="Script" id=45]
 [ext_resource path="res://assets/sprites/cancel_button.png" type="Texture" id=46]
@@ -52,10 +52,95 @@
 [ext_resource path="res://assets/sprites/positive_button.png" type="Texture" id=50]
 [ext_resource path="res://assets/sprites/positive_button_pressed.png" type="Texture" id=51]
 [ext_resource path="res://assets/sprites/transit.png" type="Texture" id=52]
+[ext_resource path="res://scripts/switcher.gd" type="Script" id=53]
+[ext_resource path="res://assets/sprites/dark_button_bottom.png" type="Texture" id=54]
+[ext_resource path="res://assets/sprites/dark_button_bottom_hover.png" type="Texture" id=55]
+[ext_resource path="res://assets/sprites/flipper.png" type="Texture" id=56]
+[ext_resource path="res://scripts/location_switcher.gd" type="Script" id=57]
+[ext_resource path="res://assets/sprites/aircraft/airbus_generic.png" type="Texture" id=58]
+[ext_resource path="res://scripts/title.gd" type="Script" id=59]
+[ext_resource path="res://assets/sprites/tutorial_square_highlight.png" type="Texture" id=60]
+[ext_resource path="res://assets/sprites/air_listing.png" type="Texture" id=61]
+[ext_resource path="res://assets/sprites/cargo_listing.png" type="Texture" id=62]
+[ext_resource path="res://prefabs/cargo_item.tscn" type="PackedScene" id=63]
+[ext_resource path="res://assets/sprites/location_action_left.png" type="Texture" id=64]
+[ext_resource path="res://assets/sprites/location_action_left_hover.png" type="Texture" id=65]
+[ext_resource path="res://assets/sprites/location_action_right.png" type="Texture" id=66]
+[ext_resource path="res://assets/sprites/location_action_right_hover.png" type="Texture" id=67]
+[ext_resource path="res://assets/sprites/seatile.png" type="Texture" id=68]
+[ext_resource path="res://prefabs/flock_alt.tscn" type="PackedScene" id=69]
+[ext_resource path="res://assets/sprites/water_sparkle.png" type="Texture" id=70]
+[ext_resource path="res://prefabs/flock.tscn" type="PackedScene" id=71]
+[ext_resource path="res://assets/sprites/actions_single_side_hover.png" type="Texture" id=72]
+[ext_resource path="res://assets/sprites/dialog_close_hover.png" type="Texture" id=73]
+[ext_resource path="res://scripts/warehouse.gd" type="Script" id=74]
+[ext_resource path="res://assets/styles/scrollbar.tres" type="Theme" id=75]
 
 [sub_resource type="Gradient" id=17]
 offsets = PoolRealArray( 0, 0, 0, 0.674556, 1 )
 colors = PoolColorArray( 0.211765, 0.211765, 0.211765, 1, 1, 0.835294, 0.835294, 1, 1, 1, 1, 1, 1, 0.835294, 0.835294, 1, 0.211765, 0.211765, 0.211765, 1 )
+
+[sub_resource type="Shader" id=101]
+code = "shader_type canvas_item;
+
+uniform float lod: hint_range(0.0, 5) = 1.0;
+
+void fragment(){
+	vec4 color = texture(SCREEN_TEXTURE, SCREEN_UV, lod);
+	COLOR = color;
+}"
+
+[sub_resource type="ShaderMaterial" id=102]
+shader = SubResource( 101 )
+shader_param/lod = 1.0
+
+[sub_resource type="Gradient" id=105]
+offsets = PoolRealArray( 0.477273, 1 )
+colors = PoolColorArray( 1, 1, 1, 1, 1, 1, 1, 0 )
+
+[sub_resource type="GradientTexture" id=106]
+gradient = SubResource( 105 )
+
+[sub_resource type="ParticlesMaterial" id=107]
+emission_shape = 2
+emission_box_extents = Vector3( 60, 50, 1 )
+flag_disable_z = true
+gravity = Vector3( 0, 0, 0 )
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+scale = 0.1
+color_ramp = SubResource( 106 )
+
+[sub_resource type="Shader" id=111]
+code = "shader_type canvas_item;
+
+uniform float speed: hint_range(0.0, 1.0) = 0.5;
+uniform float blur: hint_range(0.0, 2.0) = 0.0;
+
+void fragment(){
+	COLOR = textureLod(TEXTURE, vec2(UV.x, UV.y - TIME * speed), blur);
+}
+"
+
+[sub_resource type="ShaderMaterial" id=104]
+shader = SubResource( 111 )
+shader_param/speed = 0.029
+shader_param/blur = 0.0
+
+[sub_resource type="Shader" id=112]
+code = "shader_type canvas_item;
+
+uniform float speed: hint_range(0.0, 1.0) = 0.5;
+uniform float blur: hint_range(0.0, 2.0) = 0.0;
+
+void fragment(){
+	COLOR = textureLod(TEXTURE, vec2(UV.x, UV.y - TIME * speed), blur);
+}"
+
+[sub_resource type="ShaderMaterial" id=113]
+shader = SubResource( 112 )
+shader_param/speed = 0.016
+shader_param/blur = 0.0
 
 [sub_resource type="TileSet" id=1]
 0/name = "Tileset_Arranged.png 0"
@@ -289,12 +374,11 @@ margin_right = 13.0
 margin_top = 8.0
 margin_bottom = 11.0
 
-[sub_resource type="DynamicFont" id=12]
-font_data = ExtResource( 6 )
-
-[sub_resource type="DynamicFont" id=16]
-size = 10
-font_data = ExtResource( 6 )
+[sub_resource type="DynamicFont" id=114]
+outline_size = 2
+outline_color = Color( 0, 0, 0, 1 )
+extra_spacing_bottom = -3
+font_data = ExtResource( 33 )
 
 [sub_resource type="DynamicFont" id=73]
 font_data = ExtResource( 33 )
@@ -302,8 +386,15 @@ font_data = ExtResource( 33 )
 [sub_resource type="DynamicFont" id=74]
 font_data = ExtResource( 33 )
 
+[sub_resource type="DynamicFont" id=110]
+extra_spacing_top = -4
+font_data = ExtResource( 23 )
+
 [sub_resource type="DynamicFont" id=72]
 font_data = ExtResource( 23 )
+
+[sub_resource type="DynamicFont" id=88]
+font_data = ExtResource( 33 )
 
 [sub_resource type="DynamicFont" id=37]
 extra_spacing_top = -2
@@ -321,6 +412,14 @@ margin_top = 1.0
 margin_bottom = 5.0
 
 [sub_resource type="StyleBoxTexture" id=66]
+texture = ExtResource( 72 )
+region_rect = Rect2( 0, 0, 24, 24 )
+margin_left = 2.0
+margin_right = 1.0
+margin_top = 1.0
+margin_bottom = 2.0
+
+[sub_resource type="StyleBoxTexture" id=121]
 texture = ExtResource( 17 )
 region_rect = Rect2( 0, 0, 24, 24 )
 margin_left = 2.0
@@ -329,6 +428,14 @@ margin_top = 1.0
 margin_bottom = 2.0
 
 [sub_resource type="StyleBoxEmpty" id=67]
+
+[sub_resource type="StyleBoxTexture" id=120]
+texture = ExtResource( 17 )
+region_rect = Rect2( 0, 0, 24, 24 )
+margin_left = 2.0
+margin_right = 2.0
+margin_top = 1.0
+margin_bottom = 2.0
 
 [sub_resource type="StyleBoxTexture" id=54]
 texture = ExtResource( 32 )
@@ -395,9 +502,9 @@ content_margin_top = 2.0
 texture = ExtResource( 36 )
 region_rect = Rect2( 0, 0, 24, 24 )
 margin_left = 1.0
-margin_right = 5.0
+margin_right = 6.0
 margin_top = 2.0
-margin_bottom = 4.0
+margin_bottom = 5.0
 
 [sub_resource type="DynamicFont" id=56]
 extra_spacing_top = 2
@@ -406,36 +513,62 @@ font_data = ExtResource( 33 )
 [sub_resource type="DynamicFont" id=60]
 font_data = ExtResource( 23 )
 
-[sub_resource type="StyleBoxTexture" id=57]
-texture = ExtResource( 38 )
+[sub_resource type="StyleBoxTexture" id=122]
+texture = ExtResource( 73 )
 region_rect = Rect2( 0, 0, 24, 24 )
-margin_left = 2.0
-margin_right = 4.0
-margin_top = 4.0
-margin_bottom = 1.0
+margin_left = 8.0
+margin_right = 5.0
+margin_top = 5.0
+margin_bottom = 3.0
 
-[sub_resource type="StyleBoxTexture" id=58]
-texture = ExtResource( 38 )
+[sub_resource type="StyleBoxTexture" id=123]
+texture = ExtResource( 12 )
 region_rect = Rect2( 0, 0, 24, 24 )
-margin_left = 2.0
-margin_right = 4.0
-margin_top = 4.0
-margin_bottom = 1.0
+margin_left = 8.0
+margin_right = 5.0
+margin_top = 5.0
+margin_bottom = 3.0
 
 [sub_resource type="StyleBoxEmpty" id=59]
 
 [sub_resource type="StyleBoxTexture" id=55]
-texture = ExtResource( 37 )
+texture = ExtResource( 27 )
 region_rect = Rect2( 0, 0, 24, 24 )
-margin_left = 2.0
-margin_right = 4.0
-margin_top = 4.0
-margin_bottom = 1.0
+margin_left = 8.0
+margin_right = 5.0
+margin_top = 5.0
+margin_bottom = 3.0
+
+[sub_resource type="DynamicFont" id=116]
+extra_spacing_bottom = 2
+font_data = ExtResource( 23 )
+
+[sub_resource type="DynamicFont" id=117]
+extra_spacing_bottom = 4
+font_data = ExtResource( 23 )
 
 [sub_resource type="DynamicFont" id=61]
-extra_spacing_top = 6
-extra_spacing_bottom = 6
+extra_spacing_top = 10
+extra_spacing_bottom = 10
 font_data = ExtResource( 33 )
+
+[sub_resource type="StyleBoxTexture" id=118]
+texture = ExtResource( 18 )
+region_rect = Rect2( 0, 0, 24, 24 )
+margin_left = 5.0
+margin_right = 5.0
+margin_top = 8.0
+margin_bottom = 8.0
+
+[sub_resource type="StyleBoxEmpty" id=119]
+
+[sub_resource type="StyleBoxTexture" id=115]
+texture = ExtResource( 30 )
+region_rect = Rect2( 0, 0, 24, 24 )
+margin_left = 5.0
+margin_right = 5.0
+margin_top = 6.0
+margin_bottom = 6.0
 
 [sub_resource type="DynamicFont" id=18]
 extra_spacing_top = -1
@@ -474,9 +607,6 @@ font_data = ExtResource( 23 )
 
 [sub_resource type="StyleBoxEmpty" id=28]
 
-[sub_resource type="StyleBoxFlat" id=32]
-bg_color = Color( 0.21, 0.21, 0.21, 1 )
-
 [sub_resource type="StyleBoxEmpty" id=30]
 
 [sub_resource type="StyleBoxEmpty" id=31]
@@ -484,6 +614,20 @@ bg_color = Color( 0.21, 0.21, 0.21, 1 )
 [sub_resource type="DynamicFont" id=25]
 extra_spacing_top = 16
 extra_spacing_bottom = 8
+font_data = ExtResource( 33 )
+
+[sub_resource type="DynamicFont" id=92]
+font_data = ExtResource( 33 )
+
+[sub_resource type="DynamicFont" id=90]
+extra_spacing_top = 3
+font_data = ExtResource( 33 )
+
+[sub_resource type="DynamicFont" id=91]
+extra_spacing_bottom = -2
+font_data = ExtResource( 23 )
+
+[sub_resource type="DynamicFont" id=93]
 font_data = ExtResource( 33 )
 
 [sub_resource type="DynamicFont" id=62]
@@ -516,10 +660,73 @@ margin_right = 5.0
 margin_top = 1.0
 margin_bottom = 5.0
 
-[sub_resource type="DynamicFont" id=63]
-outline_size = 2
-outline_color = Color( 0, 0.399768, 0.542969, 1 )
+[sub_resource type="DynamicFont" id=87]
 font_data = ExtResource( 33 )
+
+[sub_resource type="DynamicFont" id=84]
+extra_spacing_top = 6
+font_data = ExtResource( 33 )
+
+[sub_resource type="StyleBoxTexture" id=85]
+texture = ExtResource( 55 )
+region_rect = Rect2( 0, 0, 24, 24 )
+margin_left = 5.0
+margin_right = 5.0
+margin_top = 1.0
+margin_bottom = 5.0
+
+[sub_resource type="StyleBoxTexture" id=83]
+texture = ExtResource( 54 )
+region_rect = Rect2( 0, 0, 24, 24 )
+margin_left = 5.0
+margin_right = 5.0
+margin_top = 1.0
+margin_bottom = 5.0
+
+[sub_resource type="StyleBoxEmpty" id=86]
+
+[sub_resource type="DynamicFont" id=89]
+font_data = ExtResource( 33 )
+
+[sub_resource type="DynamicFont" id=95]
+font_data = ExtResource( 33 )
+
+[sub_resource type="StyleBoxTexture" id=96]
+texture = ExtResource( 65 )
+region_rect = Rect2( 0, 0, 24, 24 )
+margin_left = 5.0
+margin_right = 1.0
+margin_top = 5.0
+margin_bottom = 5.0
+
+[sub_resource type="StyleBoxEmpty" id=97]
+
+[sub_resource type="StyleBoxTexture" id=94]
+texture = ExtResource( 64 )
+region_rect = Rect2( 0, 0, 24, 24 )
+margin_left = 5.0
+margin_right = 1.0
+margin_top = 5.0
+margin_bottom = 5.0
+
+[sub_resource type="DynamicFont" id=100]
+font_data = ExtResource( 33 )
+
+[sub_resource type="StyleBoxTexture" id=99]
+texture = ExtResource( 67 )
+region_rect = Rect2( 0, 0, 24, 24 )
+margin_left = 1.0
+margin_right = 5.0
+margin_top = 5.0
+margin_bottom = 5.0
+
+[sub_resource type="StyleBoxTexture" id=98]
+texture = ExtResource( 66 )
+region_rect = Rect2( 0, 0, 24, 24 )
+margin_left = 1.0
+margin_right = 5.0
+margin_top = 5.0
+margin_bottom = 5.0
 
 [node name="world" type="Node2D"]
 script = ExtResource( 15 )
@@ -534,10 +741,10 @@ visible = false
 [node name="ground" type="TextureRect" parent="screens/runway"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -180.0
-margin_top = -768.0
-margin_right = 170.0
-margin_bottom = 523.0
+margin_left = -181.0
+margin_top = -769.0
+margin_right = 169.0
+margin_bottom = 522.0
 texture = ExtResource( 29 )
 stretch_mode = 2
 __meta__ = {
@@ -545,10 +752,10 @@ __meta__ = {
 }
 
 [node name="dashed" type="TextureRect" parent="screens/runway"]
-margin_left = -50.0
-margin_top = -584.0
-margin_right = -46.0
-margin_bottom = 366.0
+margin_left = -3.0
+margin_top = -583.0
+margin_right = 1.0
+margin_bottom = 367.0
 texture = ExtResource( 25 )
 stretch_mode = 2
 __meta__ = {
@@ -556,7 +763,7 @@ __meta__ = {
 }
 
 [node name="crosswalk" type="Sprite" parent="screens/runway"]
-position = Vector2( -49, 166 )
+position = Vector2( -2, 167 )
 texture = ExtResource( 24 )
 
 [node name="shade" type="CanvasModulate" parent="screens"]
@@ -588,18 +795,92 @@ __meta__ = {
 }
 
 [node name="transit" type="Node2D" parent="screens"]
+visible = false
+material = SubResource( 102 )
+
+[node name="TextureRect" type="Sprite" parent="screens/transit"]
+position = Vector2( -0.500004, -1.14441e-05 )
+scale = Vector2( 3.34375, 5 )
+texture = ExtResource( 68 )
+
+[node name="Particles2D" type="Particles2D" parent="screens/transit/TextureRect"]
+amount = 256
+lifetime = 2.0
+speed_scale = 2.0
+process_material = SubResource( 107 )
+texture = ExtResource( 70 )
 
 [node name="background" type="TextureRect" parent="screens/transit"]
-anchor_right = 1.0
-anchor_bottom = 1.0
+light_mask = 2
+material = SubResource( 104 )
 margin_left = -160.0
-margin_top = -249.0
-margin_right = 160.0
-margin_bottom = 1351.0
+margin_top = -409.0
+margin_right = 159.0
+margin_bottom = 603.0
 texture = ExtResource( 52 )
+stretch_mode = 2
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="background2" type="TextureRect" parent="screens/transit"]
+light_mask = 2
+material = SubResource( 113 )
+margin_left = -160.0
+margin_top = -409.0
+margin_right = 159.0
+margin_bottom = 603.0
+texture = ExtResource( 6 )
+stretch_mode = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="flock" parent="screens/transit" instance=ExtResource( 71 )]
+
+[node name="flock2" parent="screens/transit" instance=ExtResource( 69 )]
+position = Vector2( 78, -383 )
+
+[node name="title" type="Node2D" parent="screens"]
+script = ExtResource( 59 )
+
+[node name="ground" type="TextureRect" parent="screens/title"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -180.0
+margin_top = -768.0
+margin_right = 170.0
+margin_bottom = 523.0
+texture = ExtResource( 29 )
+stretch_mode = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="dashed" type="TextureRect" parent="screens/title"]
+margin_left = -3.0
+margin_top = -584.0
+margin_right = 1.0
+margin_bottom = 366.0
+texture = ExtResource( 25 )
+stretch_mode = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="crosswalk" type="Sprite" parent="screens/title"]
+position = Vector2( -2, 166 )
+texture = ExtResource( 24 )
+
+[node name="aircraft" type="Sprite" parent="screens/title"]
+position = Vector2( -1, 485 )
+texture = ExtResource( 58 )
+
+[node name="time" type="Timer" parent="screens/title"]
+wait_time = 15.0
+autostart = true
+
+[node name="tween" type="Tween" parent="screens/title"]
 
 [node name="map" type="Node2D" parent="."]
 visible = false
@@ -656,21 +937,17 @@ tile_data = PoolIntArray( -393217, 0, 0, -458752, 0, 1, -458751, 0, 2, -327681, 
 
 [node name="locations" type="Node2D" parent="."]
 
-[node name="essex" parent="locations" instance=ExtResource( 2 )]
-position = Vector2( -234, 181 )
-_location_name = "Essex"
-
 [node name="burlington" parent="locations" instance=ExtResource( 2 )]
 position = Vector2( 613, 183 )
 _location_name = "Burlington"
 
+[node name="essex" parent="locations" instance=ExtResource( 2 )]
+position = Vector2( -234, 181 )
+_location_name = "Essex"
+
 [node name="saintj" parent="locations" instance=ExtResource( 2 )]
 position = Vector2( 219, -258 )
 _location_name = "Saint Johnsbury"
-
-[node name="williston" parent="locations" instance=ExtResource( 2 )]
-position = Vector2( 263, 143 )
-_location_name = "Williston"
 
 [node name="ui" type="CanvasLayer" parent="."]
 
@@ -705,7 +982,7 @@ custom_styles/panel = SubResource( 45 )
 anchor_left = 0.5
 anchor_right = 0.5
 margin_left = -32.0
-margin_top = 42.0
+margin_top = 16.0
 margin_right = 32.0
 margin_bottom = 21.0
 rect_min_size = Vector2( 0, 38 )
@@ -715,20 +992,22 @@ __meta__ = {
 }
 
 [node name="Panel" type="NinePatchRect" parent="ui/dashboard/shade/top"]
-margin_right = 64.0
+margin_right = 68.0
 margin_bottom = 38.0
+rect_min_size = Vector2( 68, 0 )
 size_flags_horizontal = 7
 size_flags_vertical = 3
 texture = ExtResource( 10 )
-patch_margin_left = 4
-patch_margin_top = 4
-patch_margin_right = 4
-patch_margin_bottom = 4
+patch_margin_left = 7
+patch_margin_top = 5
+patch_margin_right = 7
+patch_margin_bottom = 5
 
 [node name="cash" type="HBoxContainer" parent="ui/dashboard/shade/top/Panel"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 8.0
+margin_left = 12.0
+margin_right = 12.0
 size_flags_horizontal = 3
 size_flags_vertical = 5
 custom_constants/separation = 6
@@ -746,7 +1025,7 @@ texture = ExtResource( 7 )
 [node name="cash_amount" type="Label" parent="ui/dashboard/shade/top/Panel/cash"]
 margin_left = 29.0
 margin_top = 14.0
-margin_right = 56.0
+margin_right = 68.0
 margin_bottom = 24.0
 size_flags_horizontal = 3
 theme = SubResource( 9 )
@@ -768,6 +1047,7 @@ margin_right = 200.0
 margin_bottom = 448.0
 size_flags_horizontal = 4
 size_flags_vertical = 8
+custom_constants/separation = 6
 
 [node name="cancel_button" type="Button" parent="ui/dashboard/global_actions"]
 margin_right = 81.0
@@ -804,52 +1084,72 @@ __meta__ = {
 }
 
 [node name="vertical" type="VBoxContainer" parent="ui/dashboard"]
-visible = false
 margin_right = 320.0
 margin_bottom = 448.0
 
 [node name="current" type="VBoxContainer" parent="ui/dashboard/vertical"]
 margin_right = 320.0
-margin_bottom = 301.0
+margin_bottom = 279.0
 rect_min_size = Vector2( 80, 0 )
 size_flags_vertical = 3
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="name" type="Label" parent="ui/dashboard/vertical/current"]
+[node name="transit" type="HBoxContainer" parent="ui/dashboard/vertical/current"]
 visible = false
-margin_right = 320.0
-margin_bottom = 16.0
-custom_fonts/font = SubResource( 12 )
-text = "PLANE NAME"
-valign = 1
-autowrap = true
+margin_left = 99.0
+margin_right = 221.0
+margin_bottom = 75.0
+size_flags_horizontal = 4
 
-[node name="location" type="Label" parent="ui/dashboard/vertical/current"]
-visible = false
-margin_top = 20.0
-margin_right = 320.0
-margin_bottom = 31.0
-custom_fonts/font = SubResource( 16 )
-text = "LOCATION"
-valign = 1
+[node name="from_name" type="Label" parent="ui/dashboard/vertical/current/transit"]
+margin_right = 36.0
+margin_bottom = 75.0
+rect_min_size = Vector2( 0, 75 )
+custom_colors/font_color = Color( 1, 0, 0, 1 )
+custom_fonts/font = SubResource( 114 )
+text = "Essex"
+align = 1
+valign = 2
 
-[node name="state" type="Label" parent="ui/dashboard/vertical/current"]
+[node name="chevron" type="Label" parent="ui/dashboard/vertical/current/transit"]
+margin_left = 40.0
+margin_right = 56.0
+margin_bottom = 75.0
+rect_min_size = Vector2( 0, 75 )
+custom_fonts/font = SubResource( 114 )
+text = " > "
+align = 1
+valign = 2
+
+[node name="to_name" type="Label" parent="ui/dashboard/vertical/current/transit"]
+margin_left = 60.0
+margin_right = 122.0
+margin_bottom = 75.0
+rect_min_size = Vector2( 0, 75 )
+custom_colors/font_color = Color( 0.360784, 1, 0, 1 )
+custom_fonts/font = SubResource( 114 )
+text = "Burlington"
+align = 1
+valign = 2
+
+[node name="trip_time" type="Label" parent="ui/dashboard/vertical/current"]
 visible = false
-margin_top = 35.0
 margin_right = 320.0
-margin_bottom = 46.0
-custom_fonts/font = SubResource( 16 )
-text = "LOCATION"
-valign = 1
+margin_bottom = 24.0
+rect_min_size = Vector2( 0, 24 )
+custom_fonts/font = SubResource( 114 )
+text = "0:00"
+align = 1
+valign = 2
 
 [node name="shadow" type="NinePatchRect" parent="ui/dashboard/vertical"]
 margin_left = 38.0
-margin_top = 305.0
+margin_top = 283.0
 margin_right = 282.0
 margin_bottom = 448.0
-rect_min_size = Vector2( 244, 143 )
+rect_min_size = Vector2( 244, 165 )
 size_flags_horizontal = 4
 texture = ExtResource( 44 )
 patch_margin_left = 6
@@ -859,7 +1159,7 @@ patch_margin_bottom = 6
 
 [node name="border" type="NinePatchRect" parent="ui/dashboard/vertical/shadow"]
 margin_right = 244.0
-margin_bottom = 140.0
+margin_bottom = 162.0
 rect_min_size = Vector2( 244, 140 )
 size_flags_horizontal = 4
 size_flags_vertical = 0
@@ -886,8 +1186,8 @@ __meta__ = {
 [node name="content" type="NinePatchRect" parent="ui/dashboard/vertical/shadow/border/container"]
 margin_left = 3.0
 margin_right = 241.0
-margin_bottom = 92.0
-rect_min_size = Vector2( 238, 72 )
+margin_bottom = 112.0
+rect_min_size = Vector2( 238, 112 )
 size_flags_horizontal = 4
 size_flags_vertical = 3
 texture = ExtResource( 39 )
@@ -918,54 +1218,91 @@ custom_fonts/font = SubResource( 74 )
 text = "LOCATION"
 align = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="ui/dashboard/vertical/shadow/border/container/content/vertical"]
-margin_left = 48.0
-margin_top = 36.0
-margin_right = 190.0
-margin_bottom = 76.0
-rect_min_size = Vector2( 0, 40 )
+[node name="VBoxContainer" type="VBoxContainer" parent="ui/dashboard/vertical/shadow/border/container/content/vertical"]
+margin_top = 53.0
+margin_right = 238.0
+margin_bottom = 78.0
+size_flags_vertical = 6
+
+[node name="labels" type="HBoxContainer" parent="ui/dashboard/vertical/shadow/border/container/content/vertical/VBoxContainer"]
+margin_left = 81.0
+margin_right = 157.0
+margin_bottom = 12.0
+rect_min_size = Vector2( 0, 12 )
 size_flags_horizontal = 4
 size_flags_vertical = 4
 custom_constants/separation = 12
 
-[node name="HBoxContainer" type="HBoxContainer" parent="ui/dashboard/vertical/shadow/border/container/content/vertical/HBoxContainer"]
-margin_right = 65.0
-margin_bottom = 40.0
+[node name="fuel" type="HBoxContainer" parent="ui/dashboard/vertical/shadow/border/container/content/vertical/VBoxContainer/labels"]
+margin_right = 32.0
+margin_bottom = 12.0
+rect_min_size = Vector2( 32, 0 )
+size_flags_horizontal = 3
+
+[node name="label" type="Label" parent="ui/dashboard/vertical/shadow/border/container/content/vertical/VBoxContainer/labels/fuel"]
+margin_top = 1.0
+margin_right = 32.0
+margin_bottom = 10.0
+size_flags_horizontal = 3
+custom_fonts/font = SubResource( 110 )
+text = "FUEL"
+align = 1
+
+[node name="weight" type="HBoxContainer" parent="ui/dashboard/vertical/shadow/border/container/content/vertical/VBoxContainer/labels"]
+margin_left = 44.0
+margin_right = 76.0
+margin_bottom = 12.0
+rect_min_size = Vector2( 32, 0 )
+size_flags_horizontal = 3
+
+[node name="label" type="Label" parent="ui/dashboard/vertical/shadow/border/container/content/vertical/VBoxContainer/labels/weight"]
+margin_top = 1.0
+margin_right = 32.0
+margin_bottom = 10.0
+size_flags_horizontal = 3
+custom_fonts/font = SubResource( 110 )
+text = "WEIGHT"
+align = 1
+
+[node name="values" type="HBoxContainer" parent="ui/dashboard/vertical/shadow/border/container/content/vertical/VBoxContainer"]
+margin_left = 81.0
+margin_top = 16.0
+margin_right = 157.0
+margin_bottom = 25.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+custom_constants/separation = 12
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ui/dashboard/vertical/shadow/border/container/content/vertical/VBoxContainer/values"]
+margin_right = 32.0
+margin_bottom = 9.0
+rect_min_size = Vector2( 32, 0 )
 size_flags_horizontal = 4
 
-[node name="TextureRect" type="TextureRect" parent="ui/dashboard/vertical/shadow/border/container/content/vertical/HBoxContainer/HBoxContainer"]
-margin_top = 12.0
-margin_right = 16.0
-margin_bottom = 28.0
-size_flags_vertical = 4
-texture = ExtResource( 43 )
+[node name="_fuel_indicator" type="Label" parent="ui/dashboard/vertical/shadow/border/container/content/vertical/VBoxContainer/values/HBoxContainer"]
+margin_right = 32.0
+margin_bottom = 9.0
+size_flags_horizontal = 3
+custom_fonts/font = SubResource( 110 )
+text = "78%"
+align = 1
+valign = 1
 
-[node name="Label" type="Label" parent="ui/dashboard/vertical/shadow/border/container/content/vertical/HBoxContainer/HBoxContainer"]
-margin_left = 20.0
-margin_top = 13.0
-margin_right = 65.0
-margin_bottom = 27.0
-text = "0 / 100"
-
-[node name="HBoxContainer2" type="HBoxContainer" parent="ui/dashboard/vertical/shadow/border/container/content/vertical/HBoxContainer"]
-margin_left = 77.0
-margin_right = 142.0
-margin_bottom = 40.0
+[node name="HBoxContainer2" type="HBoxContainer" parent="ui/dashboard/vertical/shadow/border/container/content/vertical/VBoxContainer/values"]
+margin_left = 44.0
+margin_right = 76.0
+margin_bottom = 9.0
+rect_min_size = Vector2( 32, 0 )
 size_flags_horizontal = 4
 
-[node name="TextureRect" type="TextureRect" parent="ui/dashboard/vertical/shadow/border/container/content/vertical/HBoxContainer/HBoxContainer2"]
-margin_top = 12.0
-margin_right = 16.0
-margin_bottom = 28.0
-size_flags_vertical = 4
-texture = ExtResource( 43 )
-
-[node name="Label" type="Label" parent="ui/dashboard/vertical/shadow/border/container/content/vertical/HBoxContainer/HBoxContainer2"]
-margin_left = 20.0
-margin_top = 13.0
-margin_right = 65.0
-margin_bottom = 27.0
-text = "0 / 100"
+[node name="Label" type="Label" parent="ui/dashboard/vertical/shadow/border/container/content/vertical/VBoxContainer/values/HBoxContainer2"]
+margin_right = 32.0
+margin_bottom = 9.0
+size_flags_horizontal = 3
+custom_fonts/font = SubResource( 110 )
+text = "59KG"
+align = 1
+valign = 1
 
 [node name="aircraft_count" type="Label" parent="ui/dashboard/vertical/shadow/border/container/content"]
 anchor_left = 1.0
@@ -981,23 +1318,53 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="empty_fleet" type="NinePatchRect" parent="ui/dashboard/vertical/shadow/border/container"]
+visible = false
+margin_left = 3.0
+margin_right = 241.0
+margin_bottom = 89.0
+rect_min_size = Vector2( 238, 72 )
+size_flags_horizontal = 4
+size_flags_vertical = 3
+texture = ExtResource( 39 )
+patch_margin_left = 4
+patch_margin_top = 4
+patch_margin_right = 4
+
+[node name="vertical" type="VBoxContainer" parent="ui/dashboard/vertical/shadow/border/container/empty_fleet"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = 16.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="ui/dashboard/vertical/shadow/border/container/empty_fleet/vertical"]
+margin_right = 238.0
+margin_bottom = 14.0
+custom_fonts/font = SubResource( 88 )
+text = "NO AIRCRAFT AVAILABLE"
+align = 1
+
 [node name="switcher" type="HBoxContainer" parent="ui/dashboard/vertical/shadow/border/container"]
 margin_left = 2.0
-margin_top = 92.0
+margin_top = 112.0
 margin_right = 242.0
-margin_bottom = 134.0
+margin_bottom = 157.0
 rect_min_size = Vector2( 0, 42 )
 size_flags_horizontal = 4
 custom_constants/separation = 0
+script = ExtResource( 53 )
 
 [node name="prev_aircraft" type="Button" parent="ui/dashboard/vertical/shadow/border/container/switcher"]
-margin_right = 42.0
-margin_bottom = 42.0
-rect_min_size = Vector2( 42, 0 )
+margin_right = 40.0
+margin_bottom = 45.0
+rect_min_size = Vector2( 40, 0 )
 custom_fonts/font = SubResource( 37 )
 custom_styles/hover = ExtResource( 5 )
 custom_styles/pressed = ExtResource( 5 )
 custom_styles/focus = SubResource( 39 )
+custom_styles/disabled = ExtResource( 5 )
 custom_styles/normal = SubResource( 41 )
 text = "<"
 __meta__ = {
@@ -1005,20 +1372,22 @@ __meta__ = {
 }
 
 [node name="horizontal" type="HBoxContainer" parent="ui/dashboard/vertical/shadow/border/container/switcher"]
-margin_left = 42.0
-margin_right = 198.0
-margin_bottom = 42.0
+margin_left = 40.0
+margin_right = 199.0
+margin_bottom = 45.0
 size_flags_horizontal = 3
 custom_constants/separation = 0
 
 [node name="open_location" type="Button" parent="ui/dashboard/vertical/shadow/border/container/switcher/horizontal"]
-margin_right = 42.0
-margin_bottom = 42.0
+margin_right = 45.0
+margin_bottom = 45.0
 rect_min_size = Vector2( 42, 0 )
 custom_styles/hover = SubResource( 66 )
-custom_styles/pressed = SubResource( 66 )
+custom_styles/pressed = SubResource( 121 )
 custom_styles/focus = SubResource( 67 )
+custom_styles/disabled = SubResource( 120 )
 custom_styles/normal = SubResource( 54 )
+icon = ExtResource( 62 )
 
 [node name="icon" type="TextureRect" parent="ui/dashboard/vertical/shadow/border/container/switcher/horizontal/open_location"]
 visible = false
@@ -1036,46 +1405,40 @@ __meta__ = {
 }
 
 [node name="depart" type="Button" parent="ui/dashboard/vertical/shadow/border/container/switcher/horizontal"]
-margin_left = 42.0
-margin_right = 114.0
-margin_bottom = 42.0
-rect_min_size = Vector2( 72, 0 )
+margin_left = 45.0
+margin_right = 113.0
+margin_bottom = 45.0
+rect_min_size = Vector2( 68, 0 )
 custom_fonts/font = SubResource( 64 )
 custom_styles/hover = SubResource( 68 )
 custom_styles/pressed = SubResource( 68 )
 custom_styles/focus = SubResource( 69 )
+custom_styles/disabled = SubResource( 68 )
 custom_styles/normal = SubResource( 54 )
 text = "DEPART"
 
 [node name="open_shop" type="Button" parent="ui/dashboard/vertical/shadow/border/container/switcher/horizontal"]
-margin_left = 114.0
-margin_right = 156.0
-margin_bottom = 42.0
-rect_min_size = Vector2( 42, 0 )
+margin_left = 113.0
+margin_right = 159.0
+margin_bottom = 45.0
 hint_tooltip = "Shop"
 custom_styles/hover = SubResource( 70 )
 custom_styles/pressed = SubResource( 70 )
 custom_styles/focus = SubResource( 71 )
+custom_styles/disabled = SubResource( 70 )
 custom_styles/normal = SubResource( 65 )
-
-[node name="icon" type="TextureRect" parent="ui/dashboard/vertical/shadow/border/container/switcher/horizontal/open_shop"]
-visible = false
-margin_right = 40.0
-margin_bottom = 40.0
-texture = ExtResource( 19 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+icon = ExtResource( 61 )
 
 [node name="next_aircraft" type="Button" parent="ui/dashboard/vertical/shadow/border/container/switcher"]
-margin_left = 198.0
+margin_left = 199.0
 margin_right = 240.0
-margin_bottom = 42.0
-rect_min_size = Vector2( 42, 0 )
+margin_bottom = 45.0
+rect_min_size = Vector2( 41, 0 )
 custom_fonts/font = SubResource( 37 )
 custom_styles/hover = SubResource( 44 )
 custom_styles/pressed = SubResource( 43 )
 custom_styles/focus = SubResource( 39 )
+custom_styles/disabled = SubResource( 43 )
 custom_styles/normal = SubResource( 42 )
 text = ">"
 __meta__ = {
@@ -1148,48 +1511,59 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="location" type="MarginContainer" parent="ui"]
+[node name="warehouse" type="MarginContainer" parent="ui"]
 visible = false
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -120.0
-margin_top = -160.0
-margin_right = 120.0
-margin_bottom = 160.0
-
-[node name="margin" type="MarginContainer" parent="ui/location"]
-margin_right = 240.0
-margin_bottom = 320.0
+margin_left = -139.0
+margin_top = -210.0
+margin_right = 139.0
+margin_bottom = 210.0
+script = ExtResource( 74 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="vertical" type="VBoxContainer" parent="ui/location/margin"]
-margin_right = 240.0
-margin_bottom = 320.0
+[node name="margin" type="NinePatchRect" parent="ui/warehouse"]
+margin_right = 278.0
+margin_bottom = 420.0
+texture = ExtResource( 42 )
+patch_margin_left = 6
+patch_margin_top = 6
+patch_margin_right = 6
+patch_margin_bottom = 6
+
+[node name="vertical" type="VBoxContainer" parent="ui/warehouse/margin"]
+margin_left = 3.0
+margin_top = 3.0
+margin_right = 275.0
+margin_bottom = 417.0
 size_flags_vertical = 3
 custom_constants/separation = 0
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="horizontal" type="HBoxContainer" parent="ui/location/margin/vertical"]
-margin_right = 240.0
+[node name="horizontal" type="HBoxContainer" parent="ui/warehouse/margin/vertical"]
+margin_right = 272.0
 margin_bottom = 42.0
 size_flags_horizontal = 3
 custom_constants/separation = 0
 
-[node name="margin" type="NinePatchRect" parent="ui/location/margin/vertical/horizontal"]
-margin_right = 198.0
+[node name="margin" type="NinePatchRect" parent="ui/warehouse/margin/vertical/horizontal"]
+margin_right = 230.0
 margin_bottom = 42.0
 rect_min_size = Vector2( 0, 42 )
 size_flags_horizontal = 3
 texture = ExtResource( 26 )
-patch_margin_left = 4
-patch_margin_top = 4
+patch_margin_left = 5
+patch_margin_top = 5
 patch_margin_right = 1
 patch_margin_bottom = 1
 
-[node name="location_name" type="Label" parent="ui/location/margin/vertical/horizontal/margin"]
+[node name="location_name" type="Label" parent="ui/warehouse/margin/vertical/horizontal/margin"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 20.0
@@ -1202,25 +1576,170 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="close_locaton" type="Button" parent="ui/location/margin/vertical/horizontal" groups=["close_modal"]]
-margin_left = 198.0
-margin_right = 240.0
+[node name="close_locaton" type="Button" parent="ui/warehouse/margin/vertical/horizontal" groups=["close_modal"]]
+margin_left = 230.0
+margin_right = 272.0
 margin_bottom = 42.0
 rect_min_size = Vector2( 42, 0 )
 custom_fonts/font = SubResource( 60 )
-custom_styles/hover = SubResource( 57 )
-custom_styles/pressed = SubResource( 58 )
+custom_styles/hover = SubResource( 122 )
+custom_styles/pressed = SubResource( 123 )
 custom_styles/focus = SubResource( 59 )
+custom_styles/disabled = SubResource( 123 )
 custom_styles/normal = SubResource( 55 )
+icon = ExtResource( 38 )
 
-[node name="content" type="NinePatchRect" parent="ui/location/margin/vertical"]
+[node name="content" type="NinePatchRect" parent="ui/warehouse/margin/vertical"]
 margin_top = 42.0
-margin_right = 240.0
-margin_bottom = 242.0
+margin_right = 272.0
+margin_bottom = 368.0
 rect_min_size = Vector2( 0, 200 )
+size_flags_vertical = 3
 texture = ExtResource( 28 )
 
-[node name="packages" type="ScrollContainer" parent="ui/location/margin/vertical"]
+[node name="vertical" type="VBoxContainer" parent="ui/warehouse/margin/vertical/content"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 8.0
+margin_top = 8.0
+margin_right = -8.0
+margin_bottom = -8.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="weight_info" type="NinePatchRect" parent="ui/warehouse/margin/vertical/content/vertical"]
+margin_right = 256.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 0, 32 )
+texture = ExtResource( 37 )
+patch_margin_left = 4
+patch_margin_top = 4
+patch_margin_right = 4
+patch_margin_bottom = 4
+
+[node name="weight" type="Label" parent="ui/warehouse/margin/vertical/content/vertical/weight_info"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_fonts/font = SubResource( 116 )
+text = "0.0 / 50.0"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="cargo_list" type="NinePatchRect" parent="ui/warehouse/margin/vertical/content/vertical"]
+margin_top = 36.0
+margin_right = 256.0
+margin_bottom = 310.0
+rect_min_size = Vector2( 0, 32 )
+size_flags_vertical = 3
+texture = ExtResource( 37 )
+patch_margin_left = 4
+patch_margin_top = 4
+patch_margin_right = 4
+patch_margin_bottom = 4
+
+[node name="vert" type="VBoxContainer" parent="ui/warehouse/margin/vertical/content/vertical/cargo_list"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 8.0
+margin_top = 8.0
+margin_right = -8.0
+margin_bottom = -8.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="list_title" type="MarginContainer" parent="ui/warehouse/margin/vertical/content/vertical/cargo_list/vert"]
+visible = false
+margin_right = 240.0
+margin_bottom = 32.0
+size_flags_horizontal = 3
+
+[node name="background" type="NinePatchRect" parent="ui/warehouse/margin/vertical/content/vertical/cargo_list/vert/list_title"]
+margin_right = 240.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 0, 32 )
+texture = ExtResource( 43 )
+patch_margin_left = 4
+patch_margin_top = 4
+patch_margin_right = 4
+patch_margin_bottom = 4
+
+[node name="values" type="HBoxContainer" parent="ui/warehouse/margin/vertical/content/vertical/cargo_list/vert/list_title/background"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="ui/warehouse/margin/vertical/content/vertical/cargo_list/vert/list_title/background/values"]
+margin_right = 32.0
+margin_bottom = 31.0
+rect_min_size = Vector2( 32, 0 )
+size_flags_vertical = 6
+text = "
+"
+align = 1
+
+[node name="Label2" type="Label" parent="ui/warehouse/margin/vertical/content/vertical/cargo_list/vert/list_title/background/values"]
+margin_left = 36.0
+margin_top = 7.0
+margin_right = 101.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+size_flags_vertical = 6
+custom_fonts/font = SubResource( 117 )
+text = "DESC."
+
+[node name="Label3" type="Label" parent="ui/warehouse/margin/vertical/content/vertical/cargo_list/vert/list_title/background/values"]
+margin_left = 105.0
+margin_top = 7.0
+margin_right = 170.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+size_flags_vertical = 6
+custom_fonts/font = SubResource( 117 )
+text = "WEIGHT"
+
+[node name="Label5" type="Label" parent="ui/warehouse/margin/vertical/content/vertical/cargo_list/vert/list_title/background/values"]
+margin_left = 174.0
+margin_top = 7.0
+margin_right = 240.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+size_flags_vertical = 6
+custom_fonts/font = SubResource( 117 )
+text = "LOCATION"
+
+[node name="scroll" type="ScrollContainer" parent="ui/warehouse/margin/vertical/content/vertical/cargo_list/vert"]
+margin_right = 240.0
+margin_bottom = 258.0
+rect_min_size = Vector2( 0, 20 )
+size_flags_vertical = 3
+theme = ExtResource( 75 )
+scroll_horizontal_enabled = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="container" type="VBoxContainer" parent="ui/warehouse/margin/vertical/content/vertical/cargo_list/vert/scroll"]
+margin_right = 240.0
+margin_bottom = 258.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/separation = 8
+
+[node name="cargo_item" parent="ui/warehouse/margin/vertical/content/vertical/cargo_list/vert/scroll/container" instance=ExtResource( 63 )]
+margin_bottom = 84.0
+
+[node name="packages" type="ScrollContainer" parent="ui/warehouse/margin/vertical"]
 visible = false
 margin_top = 46.0
 margin_right = 240.0
@@ -1228,18 +1747,24 @@ margin_bottom = 244.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="contents" type="VBoxContainer" parent="ui/location/margin/vertical/packages"]
+[node name="contents" type="VBoxContainer" parent="ui/warehouse/margin/vertical/packages"]
 margin_right = 240.0
 size_flags_horizontal = 3
 
-[node name="to_cargo" type="Button" parent="ui/location/margin/vertical"]
-margin_top = 242.0
-margin_right = 240.0
-margin_bottom = 274.0
+[node name="to_cargo" type="Button" parent="ui/warehouse/margin/vertical"]
+margin_top = 368.0
+margin_right = 272.0
+margin_bottom = 414.0
 custom_fonts/font = SubResource( 61 )
-text = "CARGO >"
+custom_styles/hover = SubResource( 118 )
+custom_styles/pressed = SubResource( 118 )
+custom_styles/focus = SubResource( 119 )
+custom_styles/disabled = SubResource( 118 )
+custom_styles/normal = SubResource( 115 )
+text = "{Aircraft} Cargo"
 
 [node name="shop" type="MarginContainer" parent="ui"]
+visible = false
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -1260,7 +1785,6 @@ margin_right = 300.0
 margin_bottom = 360.0
 
 [node name="stock_timer" type="Timer" parent="ui/shop/modal"]
-autostart = true
 
 [node name="margin" type="MarginContainer" parent="ui/shop/modal"]
 margin_right = 300.0
@@ -1335,23 +1859,8 @@ rect_min_size = Vector2( 48, 48 )
 custom_styles/hover = SubResource( 48 )
 custom_styles/pressed = SubResource( 47 )
 custom_styles/focus = SubResource( 49 )
+custom_styles/disabled = SubResource( 47 )
 custom_styles/normal = SubResource( 46 )
-
-[node name="TextureRect" type="TextureRect" parent="ui/shop/modal/margin/border/vertical/horizontal/close"]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -8.0
-margin_top = -8.0
-margin_right = 9.0
-margin_bottom = 9.0
-size_flags_horizontal = 0
-size_flags_vertical = 0
-texture = ExtResource( 47 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="plane_list" type="MarginContainer" parent="ui/shop/modal/margin/border/vertical"]
 margin_top = 48.0
@@ -1383,7 +1892,7 @@ rect_min_size = Vector2( 48, 0 )
 custom_fonts/font = SubResource( 26 )
 custom_styles/hover = SubResource( 27 )
 custom_styles/pressed = SubResource( 28 )
-custom_styles/focus = SubResource( 32 )
+custom_styles/focus = SubResource( 28 )
 custom_styles/disabled = SubResource( 30 )
 custom_styles/normal = SubResource( 31 )
 text = "<"
@@ -1407,32 +1916,33 @@ valign = 1
 [node name="margin" type="MarginContainer" parent="ui/shop/modal/margin/border/vertical/plane_list/content/horizontal/info"]
 margin_top = 42.0
 margin_right = 190.0
-margin_bottom = 236.0
+margin_bottom = 238.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="horizontal" type="HBoxContainer" parent="ui/shop/modal/margin/border/vertical/plane_list/content/horizontal/info/margin"]
 margin_right = 190.0
-margin_bottom = 194.0
+margin_bottom = 196.0
 size_flags_vertical = 0
 
 [node name="vertical" type="VBoxContainer" parent="ui/shop/modal/margin/border/vertical/plane_list/content/horizontal/info/margin/horizontal"]
 margin_right = 190.0
-margin_bottom = 194.0
+margin_bottom = 196.0
 size_flags_horizontal = 3
 
 [node name="price" type="HBoxContainer" parent="ui/shop/modal/margin/border/vertical/plane_list/content/horizontal/info/margin/horizontal/vertical"]
-margin_left = 75.0
-margin_right = 115.0
+margin_left = 77.0
+margin_right = 112.0
 margin_bottom = 14.0
 size_flags_horizontal = 4
 custom_constants/separation = 12
 
 [node name="amount" type="Label" parent="ui/shop/modal/margin/border/vertical/plane_list/content/horizontal/info/margin/horizontal/vertical/price"]
-margin_right = 40.0
+margin_right = 35.0
 margin_bottom = 14.0
 custom_colors/font_color = Color( 0.364706, 1, 0, 1 )
+custom_fonts/font = SubResource( 92 )
 text = "$1000"
 align = 1
 
@@ -1485,52 +1995,78 @@ rect_min_size = Vector2( 0, 8 )
 size_flags_vertical = 3
 
 [node name="speed" type="HBoxContainer" parent="ui/shop/modal/margin/border/vertical/plane_list/content/horizontal/info/margin/horizontal/vertical"]
-margin_left = 54.0
+margin_left = 60.0
 margin_top = 150.0
-margin_right = 136.0
-margin_bottom = 166.0
+margin_right = 129.0
+margin_bottom = 167.0
 size_flags_horizontal = 4
 custom_constants/separation = 12
 
 [node name="icon" type="TextureRect" parent="ui/shop/modal/margin/border/vertical/plane_list/content/horizontal/info/margin/horizontal/vertical/speed"]
 margin_right = 16.0
-margin_bottom = 16.0
+margin_bottom = 17.0
 texture = ExtResource( 31 )
 
-[node name="speed" type="Label" parent="ui/shop/modal/margin/border/vertical/plane_list/content/horizontal/info/margin/horizontal/vertical/speed"]
+[node name="HBoxContainer" type="HBoxContainer" parent="ui/shop/modal/margin/border/vertical/plane_list/content/horizontal/info/margin/horizontal/vertical/speed"]
 margin_left = 28.0
-margin_top = 1.0
-margin_right = 82.0
-margin_bottom = 15.0
-text = "200MPH"
+margin_right = 69.0
+margin_bottom = 17.0
+
+[node name="speed" type="Label" parent="ui/shop/modal/margin/border/vertical/plane_list/content/horizontal/info/margin/horizontal/vertical/speed/HBoxContainer"]
+margin_right = 21.0
+margin_bottom = 17.0
+custom_fonts/font = SubResource( 90 )
+text = "200"
+align = 1
+
+[node name="speed2" type="Label" parent="ui/shop/modal/margin/border/vertical/plane_list/content/horizontal/info/margin/horizontal/vertical/speed/HBoxContainer"]
+margin_left = 25.0
+margin_top = 3.0
+margin_right = 41.0
+margin_bottom = 14.0
+custom_fonts/font = SubResource( 91 )
+text = "MPH"
 align = 1
 
 [node name="spacer3" type="Container" parent="ui/shop/modal/margin/border/vertical/plane_list/content/horizontal/info/margin/horizontal/vertical"]
-margin_top = 170.0
+margin_top = 171.0
 margin_right = 190.0
-margin_bottom = 174.0
+margin_bottom = 175.0
 rect_min_size = Vector2( 0, 4 )
 size_flags_vertical = 3
 
 [node name="weight" type="HBoxContainer" parent="ui/shop/modal/margin/border/vertical/plane_list/content/horizontal/info/margin/horizontal/vertical"]
-margin_left = 56.0
-margin_top = 178.0
-margin_right = 134.0
-margin_bottom = 194.0
+margin_left = 63.0
+margin_top = 179.0
+margin_right = 126.0
+margin_bottom = 196.0
 size_flags_horizontal = 4
 custom_constants/separation = 12
 
 [node name="icon" type="TextureRect" parent="ui/shop/modal/margin/border/vertical/plane_list/content/horizontal/info/margin/horizontal/vertical/weight"]
 margin_right = 16.0
-margin_bottom = 16.0
+margin_bottom = 17.0
 texture = ExtResource( 35 )
 
-[node name="weight" type="Label" parent="ui/shop/modal/margin/border/vertical/plane_list/content/horizontal/info/margin/horizontal/vertical/weight"]
+[node name="HBoxContainer" type="HBoxContainer" parent="ui/shop/modal/margin/border/vertical/plane_list/content/horizontal/info/margin/horizontal/vertical/weight"]
 margin_left = 28.0
-margin_top = 1.0
-margin_right = 78.0
-margin_bottom = 15.0
-text = "1000KG"
+margin_right = 63.0
+margin_bottom = 17.0
+
+[node name="speed" type="Label" parent="ui/shop/modal/margin/border/vertical/plane_list/content/horizontal/info/margin/horizontal/vertical/weight/HBoxContainer"]
+margin_right = 21.0
+margin_bottom = 17.0
+custom_fonts/font = SubResource( 90 )
+text = "500"
+align = 1
+
+[node name="speed2" type="Label" parent="ui/shop/modal/margin/border/vertical/plane_list/content/horizontal/info/margin/horizontal/vertical/weight/HBoxContainer"]
+margin_left = 25.0
+margin_top = 3.0
+margin_right = 35.0
+margin_bottom = 14.0
+custom_fonts/font = SubResource( 91 )
+text = "KG"
 align = 1
 
 [node name="next_avail" type="Button" parent="ui/shop/modal/margin/border/vertical/plane_list/content/horizontal"]
@@ -1541,10 +2077,32 @@ rect_min_size = Vector2( 48, 0 )
 custom_fonts/font = SubResource( 26 )
 custom_styles/hover = SubResource( 27 )
 custom_styles/pressed = SubResource( 28 )
-custom_styles/focus = SubResource( 32 )
+custom_styles/focus = SubResource( 28 )
 custom_styles/disabled = SubResource( 30 )
 custom_styles/normal = SubResource( 31 )
 text = ">"
+
+[node name="none_available" type="VBoxContainer" parent="ui/shop/modal/margin/border/vertical/plane_list/content"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 1.0
+margin_right = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="ui/shop/modal/margin/border/vertical/plane_list/content/none_available"]
+margin_top = 122.0
+margin_right = 294.0
+margin_bottom = 136.0
+size_flags_horizontal = 3
+size_flags_vertical = 6
+custom_colors/font_color = Color( 0.133333, 0.133333, 0.133333, 1 )
+custom_fonts/font = SubResource( 93 )
+text = "NONE AVAILABLE"
+align = 1
+valign = 1
 
 [node name="actions" type="HBoxContainer" parent="ui/shop/modal/margin/border/vertical"]
 margin_top = 306.0
@@ -1557,27 +2115,14 @@ margin_right = 294.0
 margin_bottom = 48.0
 rect_min_size = Vector2( 0, 48 )
 size_flags_horizontal = 3
+custom_colors/font_color_disabled = Color( 0, 0.254902, 0.34902, 1 )
 custom_fonts/font = SubResource( 62 )
 custom_styles/hover = SubResource( 52 )
 custom_styles/pressed = SubResource( 51 )
 custom_styles/focus = SubResource( 53 )
+custom_styles/disabled = SubResource( 51 )
 custom_styles/normal = SubResource( 50 )
-
-[node name="label" type="Label" parent="ui/shop/modal/margin/border/vertical/actions/purchase_button"]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -33.5
-margin_top = -7.0
-margin_right = 33.5
-margin_bottom = 7.0
-custom_fonts/font = SubResource( 63 )
 text = "PURCHASE"
-align = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="takeoff" type="MarginContainer" parent="ui"]
 visible = false
@@ -1662,11 +2207,884 @@ margin_right = 246.0
 margin_bottom = 356.0
 rect_min_size = Vector2( 0, 32 )
 
+[node name="title" type="MarginContainer" parent="ui"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 12.0
+margin_right = -12.0
+margin_bottom = -12.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ui/title"]
+margin_top = 238.0
+margin_right = 296.0
+margin_bottom = 468.0
+size_flags_vertical = 8
+
+[node name="outline" type="NinePatchRect" parent="ui/title/VBoxContainer"]
+margin_right = 296.0
+margin_bottom = 230.0
+rect_min_size = Vector2( 0, 230 )
+texture = ExtResource( 42 )
+patch_margin_left = 6
+patch_margin_top = 6
+patch_margin_right = 6
+patch_margin_bottom = 6
+
+[node name="vertical" type="VBoxContainer" parent="ui/title/VBoxContainer/outline"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 3.0
+margin_top = 3.0
+margin_right = -3.0
+margin_bottom = -3.0
+custom_constants/separation = 0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="container" type="NinePatchRect" parent="ui/title/VBoxContainer/outline/vertical"]
+margin_right = 290.0
+margin_bottom = 176.0
+size_flags_vertical = 3
+texture = ExtResource( 39 )
+patch_margin_left = 4
+patch_margin_top = 4
+patch_margin_right = 4
+
+[node name="title" type="VBoxContainer" parent="ui/title/VBoxContainer/outline/vertical/container"]
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_top = -66.0
+margin_bottom = 66.0
+size_flags_vertical = 4
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ui/title/VBoxContainer/outline/vertical/container/title"]
+margin_left = 21.0
+margin_right = 269.0
+margin_bottom = 64.0
+size_flags_horizontal = 4
+
+[node name="Container" type="TextureRect" parent="ui/title/VBoxContainer/outline/vertical/container/title/HBoxContainer"]
+margin_right = 32.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 0, 64 )
+texture = ExtResource( 56 )
+stretch_mode = 2
+
+[node name="Label" type="Label" parent="ui/title/VBoxContainer/outline/vertical/container/title/HBoxContainer/Container"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_fonts/font = SubResource( 87 )
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Container2" type="TextureRect" parent="ui/title/VBoxContainer/outline/vertical/container/title/HBoxContainer"]
+margin_left = 36.0
+margin_right = 68.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 0, 64 )
+texture = ExtResource( 56 )
+stretch_mode = 2
+
+[node name="Label" type="Label" parent="ui/title/VBoxContainer/outline/vertical/container/title/HBoxContainer/Container2"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_fonts/font = SubResource( 87 )
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Container3" type="TextureRect" parent="ui/title/VBoxContainer/outline/vertical/container/title/HBoxContainer"]
+margin_left = 72.0
+margin_right = 104.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 0, 64 )
+texture = ExtResource( 56 )
+stretch_mode = 2
+
+[node name="Label" type="Label" parent="ui/title/VBoxContainer/outline/vertical/container/title/HBoxContainer/Container3"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = 18.0
+margin_bottom = 18.0
+custom_fonts/font = SubResource( 87 )
+text = "A"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Container4" type="TextureRect" parent="ui/title/VBoxContainer/outline/vertical/container/title/HBoxContainer"]
+margin_left = 108.0
+margin_right = 140.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 0, 64 )
+texture = ExtResource( 56 )
+stretch_mode = 2
+
+[node name="Label" type="Label" parent="ui/title/VBoxContainer/outline/vertical/container/title/HBoxContainer/Container4"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = 18.0
+margin_bottom = 18.0
+custom_fonts/font = SubResource( 87 )
+text = "I"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Container5" type="TextureRect" parent="ui/title/VBoxContainer/outline/vertical/container/title/HBoxContainer"]
+margin_left = 144.0
+margin_right = 176.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 0, 64 )
+texture = ExtResource( 56 )
+stretch_mode = 2
+
+[node name="Label" type="Label" parent="ui/title/VBoxContainer/outline/vertical/container/title/HBoxContainer/Container5"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = 18.0
+margin_bottom = 18.0
+custom_fonts/font = SubResource( 87 )
+text = "R"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Container6" type="TextureRect" parent="ui/title/VBoxContainer/outline/vertical/container/title/HBoxContainer"]
+margin_left = 180.0
+margin_right = 212.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 0, 64 )
+texture = ExtResource( 56 )
+stretch_mode = 2
+
+[node name="Label" type="Label" parent="ui/title/VBoxContainer/outline/vertical/container/title/HBoxContainer/Container6"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_fonts/font = SubResource( 87 )
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Container7" type="TextureRect" parent="ui/title/VBoxContainer/outline/vertical/container/title/HBoxContainer"]
+margin_left = 216.0
+margin_right = 248.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 0, 64 )
+texture = ExtResource( 56 )
+stretch_mode = 2
+
+[node name="Label" type="Label" parent="ui/title/VBoxContainer/outline/vertical/container/title/HBoxContainer/Container7"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_fonts/font = SubResource( 87 )
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="ui/title/VBoxContainer/outline/vertical/container/title"]
+margin_left = 21.0
+margin_top = 68.0
+margin_right = 269.0
+margin_bottom = 132.0
+size_flags_horizontal = 4
+
+[node name="Container" type="TextureRect" parent="ui/title/VBoxContainer/outline/vertical/container/title/HBoxContainer2"]
+margin_right = 32.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 0, 64 )
+texture = ExtResource( 56 )
+stretch_mode = 2
+
+[node name="Label" type="Label" parent="ui/title/VBoxContainer/outline/vertical/container/title/HBoxContainer2/Container"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = 17.0
+margin_bottom = 17.0
+custom_fonts/font = SubResource( 87 )
+text = "C"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Container2" type="TextureRect" parent="ui/title/VBoxContainer/outline/vertical/container/title/HBoxContainer2"]
+margin_left = 36.0
+margin_right = 68.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 0, 64 )
+texture = ExtResource( 56 )
+stretch_mode = 2
+
+[node name="Label" type="Label" parent="ui/title/VBoxContainer/outline/vertical/container/title/HBoxContainer2/Container2"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = 17.0
+margin_bottom = 17.0
+custom_fonts/font = SubResource( 87 )
+text = "O"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Container3" type="TextureRect" parent="ui/title/VBoxContainer/outline/vertical/container/title/HBoxContainer2"]
+margin_left = 72.0
+margin_right = 104.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 0, 64 )
+texture = ExtResource( 56 )
+stretch_mode = 2
+
+[node name="Label" type="Label" parent="ui/title/VBoxContainer/outline/vertical/container/title/HBoxContainer2/Container3"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = 17.0
+margin_bottom = 17.0
+custom_fonts/font = SubResource( 87 )
+text = "U"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Container4" type="TextureRect" parent="ui/title/VBoxContainer/outline/vertical/container/title/HBoxContainer2"]
+margin_left = 108.0
+margin_right = 140.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 0, 64 )
+texture = ExtResource( 56 )
+stretch_mode = 2
+
+[node name="Label" type="Label" parent="ui/title/VBoxContainer/outline/vertical/container/title/HBoxContainer2/Container4"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = 17.0
+margin_bottom = 17.0
+custom_fonts/font = SubResource( 87 )
+text = "R"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Container5" type="TextureRect" parent="ui/title/VBoxContainer/outline/vertical/container/title/HBoxContainer2"]
+margin_left = 144.0
+margin_right = 176.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 0, 64 )
+texture = ExtResource( 56 )
+stretch_mode = 2
+
+[node name="Label" type="Label" parent="ui/title/VBoxContainer/outline/vertical/container/title/HBoxContainer2/Container5"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = 17.0
+margin_bottom = 17.0
+custom_fonts/font = SubResource( 87 )
+text = "I"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Container6" type="TextureRect" parent="ui/title/VBoxContainer/outline/vertical/container/title/HBoxContainer2"]
+margin_left = 180.0
+margin_right = 212.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 0, 64 )
+texture = ExtResource( 56 )
+stretch_mode = 2
+
+[node name="Label" type="Label" parent="ui/title/VBoxContainer/outline/vertical/container/title/HBoxContainer2/Container6"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = 17.0
+margin_bottom = 17.0
+custom_fonts/font = SubResource( 87 )
+text = "E"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Container7" type="TextureRect" parent="ui/title/VBoxContainer/outline/vertical/container/title/HBoxContainer2"]
+margin_left = 216.0
+margin_right = 248.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 0, 64 )
+texture = ExtResource( 56 )
+stretch_mode = 2
+
+[node name="Label" type="Label" parent="ui/title/VBoxContainer/outline/vertical/container/title/HBoxContainer2/Container7"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = 17.0
+margin_bottom = 17.0
+custom_fonts/font = SubResource( 87 )
+text = "R"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="start" type="Button" parent="ui/title/VBoxContainer/outline/vertical"]
+margin_top = 176.0
+margin_right = 290.0
+margin_bottom = 224.0
+rect_min_size = Vector2( 0, 48 )
+custom_fonts/font = SubResource( 84 )
+custom_styles/hover = SubResource( 85 )
+custom_styles/pressed = SubResource( 83 )
+custom_styles/focus = SubResource( 86 )
+custom_styles/normal = SubResource( 83 )
+text = "START"
+
+[node name="tutorial_1" type="Control" parent="ui"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="shop_highlight" type="NinePatchRect" parent="ui/tutorial_1" groups=["tutorial"]]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = 32.0
+margin_top = -86.0
+margin_right = 80.0
+margin_bottom = -36.0
+mouse_default_cursor_shape = 2
+texture = ExtResource( 60 )
+patch_margin_left = 5
+patch_margin_top = 5
+patch_margin_right = 5
+patch_margin_bottom = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="money_highlight" type="NinePatchRect" parent="ui/tutorial_1" groups=["tutorial"]]
+margin_left = 124.0
+margin_top = 13.0
+margin_right = 199.0
+margin_bottom = 56.0
+mouse_default_cursor_shape = 2
+texture = ExtResource( 60 )
+patch_margin_left = 5
+patch_margin_top = 5
+patch_margin_right = 5
+patch_margin_bottom = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="cash_description" type="NinePatchRect" parent="ui/tutorial_1"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -150.0
+margin_top = 67.0
+margin_right = 149.0
+margin_bottom = 134.0
+texture = ExtResource( 44 )
+patch_margin_left = 6
+patch_margin_top = 6
+patch_margin_right = 6
+patch_margin_bottom = 6
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="content" type="NinePatchRect" parent="ui/tutorial_1/cash_description"]
+margin_top = -4.0
+margin_right = 299.0
+margin_bottom = 65.0
+texture = ExtResource( 42 )
+patch_margin_left = 6
+patch_margin_top = 10
+patch_margin_right = 17
+patch_margin_bottom = 6
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ui/tutorial_1/cash_description/content"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 12.0
+margin_top = 12.0
+margin_right = -12.0
+margin_bottom = -11.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="label" type="Label" parent="ui/tutorial_1/cash_description/content/VBoxContainer"]
+margin_right = 275.0
+margin_bottom = 48.0
+size_flags_vertical = 7
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 89 )
+text = "Use available cash to purchase, refuel and upgrade aircraft.  Complete contracts to earn more cash."
+valign = 1
+autowrap = true
+
+[node name="shop_description" type="NinePatchRect" parent="ui/tutorial_1"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -148.0
+margin_top = 68.0
+margin_right = 152.0
+margin_bottom = 147.0
+texture = ExtResource( 44 )
+patch_margin_left = 6
+patch_margin_top = 6
+patch_margin_right = 6
+patch_margin_bottom = 6
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="content" type="NinePatchRect" parent="ui/tutorial_1/shop_description"]
+margin_right = 300.0
+margin_bottom = 77.0
+texture = ExtResource( 42 )
+patch_margin_left = 6
+patch_margin_top = 6
+patch_margin_right = 17
+patch_margin_bottom = 10
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ui/tutorial_1/shop_description/content"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 12.0
+margin_top = 10.0
+margin_right = -12.0
+margin_bottom = -11.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="label" type="Label" parent="ui/tutorial_1/shop_description/content/VBoxContainer"]
+margin_right = 276.0
+margin_bottom = 56.0
+size_flags_vertical = 7
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 89 )
+text = "Currently there are no aircraft ready to fly. Click here to open the shop and purchase your first aircraft."
+valign = 1
+autowrap = true
+
+[node name="tutorial_2" type="Control" parent="ui"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -1.0
+margin_right = -1.0
+mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="purchase_highlight" type="NinePatchRect" parent="ui/tutorial_2" groups=["tutorial"]]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -53.0
+margin_top = 51.0
+margin_right = 53.0
+margin_bottom = 119.0
+mouse_default_cursor_shape = 2
+texture = ExtResource( 60 )
+patch_margin_left = 5
+patch_margin_top = 5
+patch_margin_right = 5
+patch_margin_bottom = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="purchase_highlight2" type="NinePatchRect" parent="ui/tutorial_2" groups=["tutorial"]]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -65.0
+margin_top = -99.0
+margin_right = 65.0
+margin_bottom = -19.0
+mouse_default_cursor_shape = 2
+texture = ExtResource( 60 )
+patch_margin_left = 5
+patch_margin_top = 5
+patch_margin_right = 5
+patch_margin_bottom = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="cash_description" type="NinePatchRect" parent="ui/tutorial_2"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -140.0
+margin_top = -225.0
+margin_right = 142.0
+margin_bottom = -125.0
+texture = ExtResource( 44 )
+patch_margin_left = 6
+patch_margin_top = 6
+patch_margin_right = 6
+patch_margin_bottom = 6
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="content" type="NinePatchRect" parent="ui/tutorial_2/cash_description"]
+margin_top = -4.0
+margin_right = 282.0
+margin_bottom = 98.0
+texture = ExtResource( 42 )
+patch_margin_left = 6
+patch_margin_top = 10
+patch_margin_right = 17
+patch_margin_bottom = 6
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ui/tutorial_2/cash_description/content"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 12.0
+margin_top = 12.0
+margin_right = -12.0
+margin_bottom = -11.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="label" type="Label" parent="ui/tutorial_2/cash_description/content/VBoxContainer"]
+margin_right = 258.0
+margin_bottom = 82.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 89 )
+text = "Each aircraft's stats are detailed below including price, which airport it is currently located at, speed and carrying capacity.  Please purchase the aircraft below to continue..."
+valign = 1
+autowrap = true
+
+[node name="depart_tutorial" type="Control" parent="ui"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="depart_highlight" type="NinePatchRect" parent="ui/depart_tutorial" groups=["tutorial"]]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -38.0
+margin_top = -87.0
+margin_right = 36.0
+margin_bottom = -34.0
+mouse_default_cursor_shape = 2
+texture = ExtResource( 60 )
+patch_margin_left = 5
+patch_margin_top = 5
+patch_margin_right = 5
+patch_margin_bottom = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="departure_description" type="NinePatchRect" parent="ui/depart_tutorial"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -141.0
+margin_top = -199.0
+margin_right = 141.0
+margin_bottom = -113.0
+texture = ExtResource( 44 )
+patch_margin_left = 6
+patch_margin_top = 6
+patch_margin_right = 6
+patch_margin_bottom = 6
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="content" type="NinePatchRect" parent="ui/depart_tutorial/departure_description"]
+margin_top = -4.0
+margin_right = 282.0
+margin_bottom = 83.0
+texture = ExtResource( 42 )
+patch_margin_left = 6
+patch_margin_top = 10
+patch_margin_right = 17
+patch_margin_bottom = 6
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ui/depart_tutorial/departure_description/content"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 12.0
+margin_top = 12.0
+margin_right = -12.0
+margin_bottom = -11.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="label" type="Label" parent="ui/depart_tutorial/departure_description/content/VBoxContainer"]
+margin_right = 258.0
+margin_bottom = 65.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 89 )
+text = "Now that cargo has been loaded onto the aircraft it needs to be given orders on where to fly. Click here to open the departure selection screen..."
+valign = 1
+autowrap = true
+
+[node name="cargo_tutorial" type="Control" parent="ui"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="cargo_highlight" type="NinePatchRect" parent="ui/cargo_tutorial" groups=["tutorial"]]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -83.0
+margin_top = -87.0
+margin_right = -31.0
+margin_bottom = -34.0
+mouse_default_cursor_shape = 2
+texture = ExtResource( 60 )
+patch_margin_left = 5
+patch_margin_top = 5
+patch_margin_right = 5
+patch_margin_bottom = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="cargo_description" type="NinePatchRect" parent="ui/cargo_tutorial"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -141.0
+margin_top = -199.0
+margin_right = 141.0
+margin_bottom = -96.0
+texture = ExtResource( 44 )
+patch_margin_left = 6
+patch_margin_top = 6
+patch_margin_right = 6
+patch_margin_bottom = 6
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="content" type="NinePatchRect" parent="ui/cargo_tutorial/cargo_description"]
+margin_top = -4.0
+margin_right = 282.0
+margin_bottom = 101.0
+texture = ExtResource( 42 )
+patch_margin_left = 6
+patch_margin_top = 10
+patch_margin_right = 17
+patch_margin_bottom = 6
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ui/cargo_tutorial/cargo_description/content"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 12.0
+margin_top = 12.0
+margin_right = -12.0
+margin_bottom = -11.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="label" type="Label" parent="ui/cargo_tutorial/cargo_description/content/VBoxContainer"]
+margin_right = 258.0
+margin_bottom = 82.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 89 )
+text = "Now that we have an aircraft that can travel from one place to another, lets load some cargo to transport. Click on the cargo button to open this location's warehouse of cargo..."
+valign = 1
+autowrap = true
+
+[node name="location_switcher" type="MarginContainer" parent="ui"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 24.0
+margin_top = 24.0
+margin_right = -24.0
+margin_bottom = -84.0
+script = ExtResource( 57 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="shade" type="NinePatchRect" parent="ui/location_switcher"]
+margin_top = 322.0
+margin_right = 272.0
+margin_bottom = 372.0
+rect_min_size = Vector2( 0, 50 )
+size_flags_vertical = 8
+texture = ExtResource( 44 )
+patch_margin_left = 6
+patch_margin_top = 6
+patch_margin_right = 6
+patch_margin_bottom = 6
+
+[node name="outline" type="NinePatchRect" parent="ui/location_switcher/shade"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_bottom = -3.0
+rect_min_size = Vector2( 0, 48 )
+size_flags_vertical = 8
+texture = ExtResource( 42 )
+patch_margin_left = 6
+patch_margin_top = 6
+patch_margin_right = 6
+patch_margin_bottom = 6
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="horizontal" type="HBoxContainer" parent="ui/location_switcher/shade/outline"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 3.0
+margin_top = 3.0
+margin_right = -3.0
+margin_bottom = -3.0
+size_flags_vertical = 8
+custom_constants/separation = 0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="prev_location" type="Button" parent="ui/location_switcher/shade/outline/horizontal"]
+margin_right = 42.0
+margin_bottom = 42.0
+rect_min_size = Vector2( 42, 42 )
+custom_colors/font_color_pressed = Color( 0.364706, 0.364706, 0.364706, 1 )
+custom_fonts/font = SubResource( 95 )
+custom_styles/hover = SubResource( 96 )
+custom_styles/pressed = SubResource( 96 )
+custom_styles/focus = SubResource( 97 )
+custom_styles/normal = SubResource( 94 )
+text = "<"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="info" type="NinePatchRect" parent="ui/location_switcher/shade/outline/horizontal"]
+margin_left = 42.0
+margin_right = 224.0
+margin_bottom = 42.0
+size_flags_horizontal = 3
+texture = ExtResource( 28 )
+
+[node name="location_title" type="Label" parent="ui/location_switcher/shade/outline/horizontal/info"]
+margin_top = 14.0
+margin_right = 180.0
+margin_bottom = 28.0
+custom_fonts/font = SubResource( 100 )
+text = "Location Name"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="next_location" type="Button" parent="ui/location_switcher/shade/outline/horizontal"]
+margin_left = 224.0
+margin_right = 266.0
+margin_bottom = 42.0
+rect_min_size = Vector2( 42, 42 )
+custom_colors/font_color_pressed = Color( 0.364706, 0.364706, 0.364706, 1 )
+custom_fonts/font = SubResource( 95 )
+custom_styles/hover = SubResource( 99 )
+custom_styles/pressed = SubResource( 99 )
+custom_styles/focus = SubResource( 97 )
+custom_styles/normal = SubResource( 98 )
+text = ">"
+
 [node name="main" type="Camera2D" parent="."]
 current = true
 script = ExtResource( 8 )
-_pan_speed = 5.0
+_pan_speed = 15.0
 
+[node name="world_tick" type="Timer" parent="."]
+autostart = true
+
+[node name="generate_tick" type="Timer" parent="."]
+wait_time = 15.0
+autostart = true
+
+[connection signal="timeout" from="screens/title/time" to="screens/title" method="_on_between"]
 [connection signal="pressed" from="ui/dashboard/shade/top/open_shop" to="ui/dashboard" method="_open_shop"]
 [connection signal="pressed" from="ui/dashboard/global_actions/cancel_button" to="screens/locations" method="_cancel_departure"]
 [connection signal="pressed" from="ui/dashboard/global_actions/confirm_button" to="ui/dashboard" method="_aircraft_depart"]
@@ -1675,8 +3093,14 @@ _pan_speed = 5.0
 [connection signal="pressed" from="ui/dashboard/vertical/shadow/border/container/switcher/horizontal/depart" to="ui/dashboard" method="_open_locations"]
 [connection signal="pressed" from="ui/dashboard/vertical/shadow/border/container/switcher/horizontal/open_shop" to="ui/dashboard" method="_open_shop"]
 [connection signal="pressed" from="ui/dashboard/vertical/shadow/border/container/switcher/next_aircraft" to="ui/dashboard" method="_next_aircraft"]
+[connection signal="pressed" from="ui/warehouse/margin/vertical/to_cargo" to="ui/warehouse" method="_switch_container"]
 [connection signal="timeout" from="ui/shop/modal/stock_timer" to="ui/shop" method="_generate_available_aircraft"]
 [connection signal="pressed" from="ui/shop/modal/margin/border/vertical/plane_list/content/horizontal/prev_avail" to="ui/shop" method="_prev_avail"]
 [connection signal="pressed" from="ui/shop/modal/margin/border/vertical/plane_list/content/horizontal/next_avail" to="ui/shop" method="_next_avail"]
 [connection signal="pressed" from="ui/shop/modal/margin/border/vertical/actions/purchase_button" to="ui/shop" method="_purchase_aircraft"]
 [connection signal="pressed" from="ui/takeoff/take_off_modal/modal/vertical/top/close" to="ui/takeoff" method="_close_takeoff"]
+[connection signal="pressed" from="ui/title/VBoxContainer/outline/vertical/start" to="screens/title" method="_start_game"]
+[connection signal="pressed" from="ui/location_switcher/shade/outline/horizontal/prev_location" to="ui/location_switcher" method="_previous_location"]
+[connection signal="pressed" from="ui/location_switcher/shade/outline/horizontal/next_location" to="ui/location_switcher" method="_next_location"]
+[connection signal="timeout" from="world_tick" to="." method="_world_tick"]
+[connection signal="timeout" from="generate_tick" to="." method="_generate_cargo"]

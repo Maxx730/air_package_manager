@@ -5,18 +5,15 @@ export(Gradient) var _daytime_color : Gradient
 onready var _screens = [
 	get_node("runway"),
 	get_node("locations"),
-	get_node("transit")
+	get_node("transit"),
+	get_node("title")
 ]
 
 func _enter_tree():
 	_globals._map = self
 
 func _set_lighting():
-	var _hour : float = OS.get_time()["hour"]
-	var _value : float = floor((_hour / 24) * _daytime_color.get_point_count())
-	_value = 1
-	$shade.color = _daytime_color.get_color(_value)
-	_globals._set_aircraft_lights(_value < 1 or _value >= (_daytime_color.get_point_count() - 1))
+	pass
 
 func _hide_screens():
 	for _screen in _screens:
@@ -38,7 +35,7 @@ func _cancel_action_pressed():
 	_globals._main_camera._panning = false
 	_globals._main_camera.position = Vector2.ZERO
 
-func _determine_aircraft_scene(state):
+func _determine_aircraft_scene(state : int = 0):
 	_hide_screens()
 	
 	match state:

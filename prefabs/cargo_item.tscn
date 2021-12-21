@@ -1,52 +1,223 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=21 format=2]
 
-[ext_resource path="res://scripts/cargo_item.gd" type="Script" id=1]
+[ext_resource path="res://assets/fonts/m6x11.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://assets/sprites/mail_icon.png" type="Texture" id=2]
+[ext_resource path="res://assets/sprites/add_cargo_pressed.png" type="Texture" id=3]
+[ext_resource path="res://assets/sprites/dialog_content_actions_lightest.png" type="Texture" id=4]
+[ext_resource path="res://assets/sprites/add_cargo.png" type="Texture" id=5]
+[ext_resource path="res://assets/fonts/DroidSans-Bold.ttf" type="DynamicFontData" id=6]
+[ext_resource path="res://assets/fonts/DroidSans.ttf" type="DynamicFontData" id=7]
+[ext_resource path="res://scripts/cargo_item.gd" type="Script" id=8]
+[ext_resource path="res://assets/sprites/remove_cargo.png" type="Texture" id=9]
+[ext_resource path="res://assets/sprites/remove_cargo_pressed.png" type="Texture" id=10]
 
-[node name="cargo_item" type="MarginContainer"]
-margin_left = 10.0
+[sub_resource type="DynamicFont" id=119]
+font_data = ExtResource( 6 )
+
+[sub_resource type="DynamicFont" id=120]
+size = 12
+font_data = ExtResource( 7 )
+
+[sub_resource type="DynamicFont" id=118]
+size = 12
+extra_spacing_top = -4
+font_data = ExtResource( 7 )
+
+[sub_resource type="DynamicFont" id=122]
+outline_size = 2
+outline_color = Color( 0.284588, 0.513672, 0.126411, 1 )
+extra_spacing_top = 2
+font_data = ExtResource( 1 )
+
+[sub_resource type="StyleBoxTexture" id=123]
+texture = ExtResource( 3 )
+region_rect = Rect2( 0, 0, 24, 24 )
+margin_left = 4.0
+margin_right = 4.0
+margin_top = 9.0
+margin_bottom = 8.0
+
+[sub_resource type="StyleBoxEmpty" id=124]
+
+[sub_resource type="StyleBoxTexture" id=121]
+texture = ExtResource( 5 )
+region_rect = Rect2( 0, 0, 24, 24 )
+margin_left = 4.0
+margin_right = 4.0
 margin_top = 8.0
-margin_right = 165.0
-margin_bottom = 58.0
-size_flags_horizontal = 3
-script = ExtResource( 1 )
+margin_bottom = 8.0
+
+[sub_resource type="DynamicFont" id=125]
+outline_size = 2
+outline_color = Color( 0.484375, 0.0983887, 0.0983887, 1 )
+font_data = ExtResource( 1 )
+
+[sub_resource type="StyleBoxTexture" id=127]
+texture = ExtResource( 10 )
+region_rect = Rect2( 0, 0, 24, 24 )
+margin_left = 4.0
+margin_right = 4.0
+margin_top = 10.0
+margin_bottom = 8.0
+
+[sub_resource type="StyleBoxTexture" id=126]
+texture = ExtResource( 9 )
+region_rect = Rect2( 0, 0, 24, 24 )
+margin_left = 4.0
+margin_right = 4.0
+margin_top = 10.0
+margin_bottom = 8.0
+
+[node name="cargo_item" type="HBoxContainer"]
+margin_right = 240.0
+margin_bottom = 72.0
+rect_min_size = Vector2( 0, 84 )
+script = ExtResource( 8 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="horizontal" type="HBoxContainer" parent="."]
-margin_right = 155.0
-margin_bottom = 50.0
+[node name="background" type="NinePatchRect" parent="."]
+margin_right = 233.0
+margin_bottom = 84.0
+rect_min_size = Vector2( 0, 72 )
 size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 4 )
+patch_margin_left = 4
+patch_margin_top = 4
+patch_margin_right = 4
+patch_margin_bottom = 4
 
-[node name="icon" type="Sprite" parent="horizontal"]
-
-[node name="vertical" type="VBoxContainer" parent="horizontal"]
-margin_right = 93.0
-margin_bottom = 50.0
-size_flags_horizontal = 3
-
-[node name="package_name" type="Label" parent="horizontal/vertical"]
-margin_right = 93.0
-margin_bottom = 14.0
-text = "Package Name"
-
-[node name="package_destination" type="Label" parent="horizontal/vertical"]
-margin_top = 18.0
-margin_right = 93.0
+[node name="vert" type="VBoxContainer" parent="background"]
+anchor_right = 1.0
 margin_bottom = 32.0
-text = "Destination"
+size_flags_horizontal = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="package_weight" type="Label" parent="horizontal/vertical"]
-margin_top = 36.0
-margin_right = 93.0
-margin_bottom = 50.0
-text = "2LBS"
+[node name="values" type="HBoxContainer" parent="background/vert"]
+margin_right = 233.0
+margin_bottom = 48.0
+size_flags_horizontal = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="deliver_button" type="Button" parent="horizontal"]
-margin_left = 97.0
-margin_right = 155.0
-margin_bottom = 50.0
-disabled = true
-text = "Deliver"
+[node name="icon" type="TextureRect" parent="background/vert/values"]
+margin_right = 32.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+size_flags_vertical = 0
+texture = ExtResource( 2 )
 
-[connection signal="pressed" from="horizontal/deliver_button" to="." method="_deliver_package"]
+[node name="VBoxContainer" type="Control" parent="background/vert/values"]
+margin_left = 36.0
+margin_right = 233.0
+margin_bottom = 48.0
+rect_min_size = Vector2( 0, 48 )
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="description" type="Label" parent="background/vert/values/VBoxContainer"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -102.0
+margin_right = 104.0
+margin_bottom = 33.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_fonts/font = SubResource( 119 )
+text = "POSTAGE"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="weight" type="Label" parent="background/vert/values/VBoxContainer"]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -58.0
+margin_top = 7.0
+margin_right = -10.0
+margin_bottom = 26.0
+rect_min_size = Vector2( 48, 0 )
+size_flags_horizontal = 0
+size_flags_vertical = 6
+custom_fonts/font = SubResource( 120 )
+text = "2.75"
+align = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="location" type="Label" parent="background/vert/values/VBoxContainer"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -103.0
+margin_top = -17.0
+margin_right = 101.0
+margin_bottom = -4.0
+size_flags_horizontal = 3
+size_flags_vertical = 6
+custom_fonts/font = SubResource( 118 )
+text = "{LOCATION} to {LOCATION}"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="action_button" type="MarginContainer" parent="background/vert"]
+margin_top = 52.0
+margin_right = 233.0
+margin_bottom = 84.0
+rect_min_size = Vector2( 24, 0 )
+
+[node name="action" type="Button" parent="background/vert/action_button"]
+margin_right = 233.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 0 )
+size_flags_horizontal = 3
+size_flags_vertical = 7
+custom_colors/font_color_disabled = Color( 0.548047, 0.648438, 0.478729, 1 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_fonts/font = SubResource( 122 )
+custom_styles/hover = SubResource( 123 )
+custom_styles/pressed = SubResource( 123 )
+custom_styles/focus = SubResource( 124 )
+custom_styles/disabled = SubResource( 123 )
+custom_styles/normal = SubResource( 121 )
+text = "+ LOAD"
+
+[node name="remove_button" type="MarginContainer" parent="background/vert"]
+margin_top = 88.0
+margin_right = 233.0
+margin_bottom = 120.0
+rect_min_size = Vector2( 24, 0 )
+
+[node name="action" type="Button" parent="background/vert/remove_button"]
+margin_right = 233.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 0 )
+size_flags_horizontal = 3
+size_flags_vertical = 7
+custom_colors/font_color_disabled = Color( 0.548047, 0.648438, 0.478729, 1 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_fonts/font = SubResource( 125 )
+custom_styles/hover = SubResource( 127 )
+custom_styles/pressed = SubResource( 127 )
+custom_styles/focus = SubResource( 124 )
+custom_styles/disabled = SubResource( 127 )
+custom_styles/normal = SubResource( 126 )
+text = "- REMOVE"
+
+[node name="space" type="Control" parent="."]
+margin_left = 237.0
+margin_right = 240.0
+margin_bottom = 84.0
+rect_min_size = Vector2( 3, 0 )
+
+[connection signal="pressed" from="background/vert/action_button/action" to="." method="_load_cargo"]
+[connection signal="pressed" from="background/vert/remove_button/action" to="." method="_remove_cargo"]
