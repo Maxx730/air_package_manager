@@ -75,6 +75,7 @@ func _remove_cargo(cargo):
 	print("working")
 
 func _save():
+	_persist["warehouse"] = []
 	for _item in _warehouse:
 		_persist["warehouse"].append(_item._save())
 

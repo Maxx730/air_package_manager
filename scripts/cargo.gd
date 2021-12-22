@@ -86,7 +86,6 @@ func _save():
 	return _persist
 
 func _load(data):
-	print(data)
 	_description = data.description
 	_weight = data.weight
 	_dest = data.destination

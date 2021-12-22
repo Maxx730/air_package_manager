@@ -27,6 +27,7 @@ var _world : Node2D = null
 var _map : Node2D = null
 var _path : Array = []
 var _switcher : HBoxContainer = null
+var _passed = -1
 
 #scenes
 var _plane_instance = preload("res://prefabs/plane.tscn")
@@ -59,6 +60,9 @@ func _load_world():
 		# through the tutorial 
 		_ui._title.visible = false
 		_map._hide_screens()
+		
+		if data.lastOpened != null:
+			_passed = _util._time_passed(data.lastOpened, OS.get_unix_time())
 		
 		# load the fleet if the player has already 
 		if data.fleet.size() > 0:
@@ -97,16 +101,18 @@ func _load_world():
 # listens for Godot notifications to save a load from filesystem
 func _notification(what):
 	if what == MainLoop.NOTIFICATION_WM_FOCUS_IN:
-		get_tree().paused = false
 		_data._load_game()
 	elif what == MainLoop.NOTIFICATION_WM_FOCUS_OUT:
-		get_tree().paused = true
 		_data._save_game()
 
 func _save():
-	_persist["lastOpened"] = OS.get_time()
+	_persist["lastOpened"] = OS.get_unix_time()
 	_persist["cash"] = _cash
 	_persist["fleet_idx"] = _fleet_idx
+	#empty arrays before saving them all to prevent duplicates
+	_persist["fleet"] = []
+	_persist["available"] = []
+	_persist["warehouses"] = []
 	
 	#Save arrays of entities here
 	for _plane in _fleet:

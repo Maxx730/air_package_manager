@@ -78,7 +78,14 @@ func _purchase_aircraft():
 	_globals._available.remove(_avail_index)
 	_globals._fleet.append(_sliced)
 	get_tree().root.add_child(_sliced)
-	_globals._plane = _sliced
+	
+	var _version = 0
+	for _craft in _globals._fleet:
+		if _craft._title == _aircraft._title:
+			_version += 1
+	
+	_globals._fleet_idx = 0
+	_globals._save()
 	_update_inventory(0)
 	_ui._dashboard._update_global_info(-(_aircraft._value))
 	_ui._dashboard._hide_all_aircraft()

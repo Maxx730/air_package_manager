@@ -4,7 +4,7 @@ onready var _destinations = get_node("vertical/top/destinations")
 onready var _switcher = $vertical/border/container/switcher
 onready var _cash_indicator = get_node("shade/top/Panel/cash/cash_amount")
 onready var _aircraft_count = get_node("vertical/shadow/border/container/content/aircraft_count")
-onready var _aircraft_name = get_node("vertical/shadow/border/container/content/vertical/aircraft_name")
+onready var _aircraft_name = get_node("vertical/shadow/border/container/content/vertical/name/aircraft_name")
 onready var _aircraft_location = get_node("vertical/shadow/border/container/content/vertical/aircraft_location")
 onready var _cancel = get_node("cancel")
 onready var _no_aircraft = $vertical/shadow/border/container/empty_fleet
@@ -54,6 +54,7 @@ func _previous_aircraft():
 	var _aircraft = _globals._fleet[_globals._fleet_idx]
 	_globals._map._determine_aircraft_scene(_aircraft._state)
 	_ui._determine_ui_actions(_aircraft._state)
+	_aircraft._update_transit_ui()
 	
 func _next_aircraft():
 	if _globals._fleet_idx >= (_globals._fleet.size() - 1):
@@ -69,6 +70,7 @@ func _next_aircraft():
 	var _aircraft = _globals._fleet[_globals._fleet_idx]
 	_globals._map._determine_aircraft_scene(_aircraft._state)
 	_ui._determine_ui_actions(_aircraft._state)
+	_aircraft._update_transit_ui()
 		
 func _hide_all_aircraft():
 	for _aircraft in _globals._fleet:
@@ -150,3 +152,10 @@ func _determine_switcher_content():
 	_location.disabled = _count < 1
 	if _globals._plane != null:
 		_shop.disabled = _globals._plane._state == _globals.PLANE_STATE.IN_TRANSIT
+
+
+func _open_customize():
+	if _ui._customize != null:
+		_ui._shade.visible = true
+		_ui._customize.visible = true
+		_ui._customize._fill_customize_data()

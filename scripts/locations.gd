@@ -28,8 +28,8 @@ func _input(event):
 				
 func _draw_trip():
 	$trip_line.clear_points()
-	$trip_line.add_point(_globals._locations[_globals._plane._location].position)
-	for _location in _globals._plane._stops:
+	$trip_line.add_point(_globals._locations[_globals._get_aircraft()._location].position)
+	for _location in _globals._get_aircraft()._stops:
 		$trip_line.add_point(_location.position)
 		
 	_determine_actions()

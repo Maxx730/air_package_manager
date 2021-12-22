@@ -1,4 +1,4 @@
-[gd_scene load_steps=170 format=2]
+[gd_scene load_steps=175 format=2]
 
 [ext_resource path="res://assets/tileset/Tileset_Arranged.png" type="Texture" id=1]
 [ext_resource path="res://prefabs/location.tscn" type="PackedScene" id=2]
@@ -75,6 +75,8 @@
 [ext_resource path="res://assets/sprites/dialog_close_hover.png" type="Texture" id=73]
 [ext_resource path="res://scripts/warehouse.gd" type="Script" id=74]
 [ext_resource path="res://assets/styles/scrollbar.tres" type="Theme" id=75]
+[ext_resource path="res://assets/sprites/pencil.png" type="Texture" id=76]
+[ext_resource path="res://scripts/customize.gd" type="Script" id=77]
 
 [sub_resource type="Gradient" id=17]
 offsets = PoolRealArray( 0, 0, 0, 0.674556, 1 )
@@ -728,6 +730,19 @@ margin_right = 5.0
 margin_top = 5.0
 margin_bottom = 5.0
 
+[sub_resource type="DynamicFont" id=124]
+font_data = ExtResource( 33 )
+
+[sub_resource type="StyleBoxEmpty" id=126]
+
+[sub_resource type="StyleBoxTexture" id=125]
+texture = ExtResource( 43 )
+region_rect = Rect2( 0, 0, 24, 24 )
+margin_left = 9.0
+margin_right = 9.0
+margin_top = 9.0
+margin_bottom = 9.0
+
 [node name="world" type="Node2D"]
 script = ExtResource( 15 )
 
@@ -950,15 +965,6 @@ position = Vector2( 219, -258 )
 _location_name = "Saint Johnsbury"
 
 [node name="ui" type="CanvasLayer" parent="."]
-
-[node name="shade" type="ColorRect" parent="ui"]
-visible = false
-anchor_right = 1.0
-anchor_bottom = 1.0
-color = Color( 0, 0, 0, 0.858824 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="dashboard" type="MarginContainer" parent="ui"]
 anchor_right = 1.0
@@ -1203,25 +1209,38 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="aircraft_name" type="Label" parent="ui/dashboard/vertical/shadow/border/container/content/vertical"]
-margin_right = 238.0
-margin_bottom = 14.0
+[node name="name" type="HBoxContainer" parent="ui/dashboard/vertical/shadow/border/container/content/vertical"]
+margin_left = 63.0
+margin_right = 174.0
+margin_bottom = 16.0
+size_flags_horizontal = 4
+
+[node name="aircraft_name" type="Label" parent="ui/dashboard/vertical/shadow/border/container/content/vertical/name"]
+margin_top = 1.0
+margin_right = 91.0
+margin_bottom = 15.0
 custom_fonts/font = SubResource( 73 )
 text = "AIRCRAFT NAME"
 align = 1
 
+[node name="rename" type="TextureButton" parent="ui/dashboard/vertical/shadow/border/container/content/vertical/name"]
+margin_left = 95.0
+margin_right = 111.0
+margin_bottom = 16.0
+texture_normal = ExtResource( 76 )
+
 [node name="aircraft_location" type="Label" parent="ui/dashboard/vertical/shadow/border/container/content/vertical"]
-margin_top = 18.0
+margin_top = 20.0
 margin_right = 238.0
-margin_bottom = 32.0
+margin_bottom = 34.0
 custom_fonts/font = SubResource( 74 )
 text = "LOCATION"
 align = 1
 
 [node name="VBoxContainer" type="VBoxContainer" parent="ui/dashboard/vertical/shadow/border/container/content/vertical"]
-margin_top = 53.0
+margin_top = 54.0
 margin_right = 238.0
-margin_bottom = 78.0
+margin_bottom = 79.0
 size_flags_vertical = 6
 
 [node name="labels" type="HBoxContainer" parent="ui/dashboard/vertical/shadow/border/container/content/vertical/VBoxContainer"]
@@ -1441,6 +1460,15 @@ custom_styles/focus = SubResource( 39 )
 custom_styles/disabled = SubResource( 43 )
 custom_styles/normal = SubResource( 42 )
 text = ">"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="shade" type="ColorRect" parent="ui"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0, 0, 0, 0.858824 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -3072,6 +3100,111 @@ custom_styles/focus = SubResource( 97 )
 custom_styles/normal = SubResource( 98 )
 text = ">"
 
+[node name="customize" type="MarginContainer" parent="ui"]
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -123.0
+margin_top = -167.0
+margin_right = 122.0
+margin_bottom = -39.0
+script = ExtResource( 77 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="shadow" type="NinePatchRect" parent="ui/customize"]
+margin_right = 245.0
+margin_bottom = 128.0
+texture = ExtResource( 44 )
+patch_margin_left = 6
+patch_margin_top = 6
+patch_margin_right = 6
+patch_margin_bottom = 6
+
+[node name="outline" type="NinePatchRect" parent="ui/customize/shadow"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_bottom = -3.0
+texture = ExtResource( 42 )
+patch_margin_left = 6
+patch_margin_top = 6
+patch_margin_right = 6
+patch_margin_bottom = 6
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="horizontal" type="HBoxContainer" parent="ui/customize/shadow/outline"]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 3.0
+margin_top = -49.0
+margin_right = -3.0
+margin_bottom = -3.0
+size_flags_vertical = 8
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="close_cuztomize" type="Button" parent="ui/customize/shadow/outline/horizontal"]
+margin_right = 239.0
+margin_bottom = 46.0
+size_flags_horizontal = 3
+size_flags_vertical = 8
+custom_fonts/font = SubResource( 61 )
+custom_styles/hover = SubResource( 118 )
+custom_styles/pressed = SubResource( 118 )
+custom_styles/focus = SubResource( 119 )
+custom_styles/disabled = SubResource( 118 )
+custom_styles/normal = SubResource( 115 )
+text = "APPLY"
+
+[node name="content" type="NinePatchRect" parent="ui/customize/shadow/outline"]
+margin_left = 3.0
+margin_top = 3.0
+margin_right = 242.0
+margin_bottom = 76.0
+texture = ExtResource( 39 )
+patch_margin_left = 5
+patch_margin_top = 5
+patch_margin_right = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="vert" type="VBoxContainer" parent="ui/customize/shadow/outline/content"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 14.0
+margin_top = 13.0
+margin_right = -14.0
+custom_constants/separation = 8
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="title" type="Label" parent="ui/customize/shadow/outline/content/vert"]
+margin_right = 211.0
+margin_bottom = 14.0
+custom_fonts/font = SubResource( 124 )
+text = "Change Aircraft Name"
+
+[node name="value" type="TextEdit" parent="ui/customize/shadow/outline/content/vert"]
+margin_top = 22.0
+margin_right = 211.0
+margin_bottom = 50.0
+rect_min_size = Vector2( 0, 28 )
+custom_styles/focus = SubResource( 126 )
+custom_styles/normal = SubResource( 125 )
+text = "Aircraft"
+context_menu_enabled = false
+shortcut_keys_enabled = false
+caret_blink = true
+
 [node name="main" type="Camera2D" parent="."]
 current = true
 script = ExtResource( 8 )
@@ -3088,6 +3221,7 @@ autostart = true
 [connection signal="pressed" from="ui/dashboard/shade/top/open_shop" to="ui/dashboard" method="_open_shop"]
 [connection signal="pressed" from="ui/dashboard/global_actions/cancel_button" to="screens/locations" method="_cancel_departure"]
 [connection signal="pressed" from="ui/dashboard/global_actions/confirm_button" to="ui/dashboard" method="_aircraft_depart"]
+[connection signal="pressed" from="ui/dashboard/vertical/shadow/border/container/content/vertical/name/rename" to="ui/dashboard" method="_open_customize"]
 [connection signal="pressed" from="ui/dashboard/vertical/shadow/border/container/switcher/prev_aircraft" to="ui/dashboard" method="_previous_aircraft"]
 [connection signal="pressed" from="ui/dashboard/vertical/shadow/border/container/switcher/horizontal/open_location" to="ui/dashboard" method="_open_location"]
 [connection signal="pressed" from="ui/dashboard/vertical/shadow/border/container/switcher/horizontal/depart" to="ui/dashboard" method="_open_locations"]
@@ -3102,5 +3236,6 @@ autostart = true
 [connection signal="pressed" from="ui/title/VBoxContainer/outline/vertical/start" to="screens/title" method="_start_game"]
 [connection signal="pressed" from="ui/location_switcher/shade/outline/horizontal/prev_location" to="ui/location_switcher" method="_previous_location"]
 [connection signal="pressed" from="ui/location_switcher/shade/outline/horizontal/next_location" to="ui/location_switcher" method="_next_location"]
+[connection signal="pressed" from="ui/customize/shadow/outline/horizontal/close_cuztomize" to="ui/customize" method="_apply_customizations"]
 [connection signal="timeout" from="world_tick" to="." method="_world_tick"]
 [connection signal="timeout" from="generate_tick" to="." method="_generate_cargo"]
