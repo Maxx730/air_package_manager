@@ -63,6 +63,17 @@ func _tick():
 	if _length <= 1:
 		if _state == _globals.PLANE_STATE.IN_TRANSIT:
 			_state = _globals.PLANE_STATE.LANDED
+			var _loc = _globals._locations.find(_stops[0])
+			_globals._notifications._add_notification("Aircraft Landed!", 5.0)
+			_location = _loc
+			_stops.remove(0)
+			
+			#destroy packages that have arrived at their destinations
+			for _item in _cargo:
+				if _item._dest == _loc:
+					print("delivered")
+					_item.queue_free()
+			
 			#since the plane has arrived at its destination, we need to 
 			#change it's state and update the scene based on the state
 			#(only if we are watching the aircraft that is in transit)
@@ -78,8 +89,13 @@ func _tick():
 		if _globals._fleet.find(self) == _globals._fleet_idx:
 			_update_transit_ui()
 
-func _transit_animations(delta):
+func _start_transit():
 	_sway()
+	$sprite/exhaust.visible = true
+	
+	
+func _end_transit():
+	pass
 
 func _save():
 	_persist["title"] = _title

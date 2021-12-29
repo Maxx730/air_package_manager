@@ -38,7 +38,7 @@ func _get_planes_landed():
 
 func _update_inventory(_aircraft = false):
 	_clear_inventory()
-	for _item in _warehouse if !_aircraft else _globals._plane._cargo:
+	for _item in _warehouse if !_aircraft else _globals._get_aircraft()._cargo:
 		var _inst = _cargo_item.instance()
 		_inst._set_info(_item._description, _item._dest, _item._weight, _item, !_aircraft)
 		_inst.connect("_on_load_cargo", self, "_load_cargo")

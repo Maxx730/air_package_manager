@@ -1,0 +1,88 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://scripts/notification.gd" type="Script" id=1]
+[ext_resource path="res://assets/sprites/dialog_content_actions_dark_round.png" type="Texture" id=2]
+[ext_resource path="res://assets/sprites/shadow_outline.png" type="Texture" id=3]
+[ext_resource path="res://assets/sprites/white_outline.png" type="Texture" id=4]
+[ext_resource path="res://assets/sprites/notification-icon.png" type="Texture" id=5]
+
+[node name="notification" type="MarginContainer"]
+margin_right = 304.0
+margin_bottom = 48.0
+rect_min_size = Vector2( 0, 48 )
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="shade" type="NinePatchRect" parent="."]
+margin_right = 304.0
+margin_bottom = 48.0
+texture = ExtResource( 3 )
+patch_margin_left = 6
+patch_margin_top = 6
+patch_margin_right = 6
+patch_margin_bottom = 6
+
+[node name="border" type="NinePatchRect" parent="shade"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -2.0
+margin_bottom = -2.0
+texture = ExtResource( 4 )
+patch_margin_left = 6
+patch_margin_top = 6
+patch_margin_right = 6
+patch_margin_bottom = 6
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="content" type="NinePatchRect" parent="shade/border"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 3.0
+margin_top = 3.0
+margin_right = -3.0
+margin_bottom = -3.0
+texture = ExtResource( 2 )
+patch_margin_left = 5
+patch_margin_top = 4
+patch_margin_right = 5
+patch_margin_bottom = 7
+
+[node name="vert" type="VBoxContainer" parent="shade/border/content"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 8.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="hor" type="HBoxContainer" parent="shade/border/content/vert"]
+margin_right = 290.0
+margin_bottom = 42.0
+size_flags_vertical = 3
+custom_constants/separation = 12
+
+[node name="icon" type="TextureRect" parent="shade/border/content/vert/hor"]
+margin_top = 9.0
+margin_right = 24.0
+margin_bottom = 33.0
+size_flags_vertical = 4
+texture = ExtResource( 5 )
+
+[node name="message" type="Label" parent="shade/border/content/vert/hor"]
+margin_left = 36.0
+margin_top = 14.0
+margin_right = 136.0
+margin_bottom = 28.0
+text = "Aircraft Landed!"
+
+[node name="timeout" type="Timer" parent="."]
+autostart = true
+
+[node name="fade" type="Tween" parent="."]
+
+[connection signal="timeout" from="timeout" to="." method="_fade_out"]
+[connection signal="tween_all_completed" from="fade" to="." method="_destroy_notification"]

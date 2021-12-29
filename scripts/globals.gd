@@ -28,6 +28,8 @@ var _map : Node2D = null
 var _path : Array = []
 var _switcher : HBoxContainer = null
 var _passed = -1
+var _notifications = null
+var _weather = null
 
 #scenes
 var _plane_instance = preload("res://prefabs/plane.tscn")
@@ -56,11 +58,6 @@ func _load_world():
 	var data = _data._load_game()
 
 	if data != null and !_tutorial:
-		# since there is already save data, they SHOULD have gone
-		# through the tutorial 
-		_ui._title.visible = false
-		_map._hide_screens()
-		
 		if data.lastOpened != null:
 			_passed = _util._time_passed(data.lastOpened, OS.get_unix_time())
 		
@@ -75,10 +72,18 @@ func _load_world():
 			_ui._dashboard._hide_all_aircraft()
 			_ui._dashboard._show_current_aircraft()
 			_ui._dashboard._set_aircraft_info()
-		
-		_map._determine_aircraft_scene(_fleet[_fleet_idx]._state if _fleet_idx > -1 else 0)
-		_ui._determine_ui_actions(_fleet[_fleet_idx]._state if _fleet_idx > -1 else -1)
-		
+			
+			# since there is already save data, they SHOULD have gone
+			# through the tutorial AND at least have one aircraft
+			_ui._title.visible = false
+			_map._hide_screens()
+			
+			_map._determine_aircraft_scene(_fleet[_fleet_idx]._state if _fleet_idx > -1 else 0)
+			_ui._determine_ui_actions(_fleet[_fleet_idx]._state if _fleet_idx > -1 else -1)
+		else:
+			#there are not any aircraft in the fleet so just show the title in the beginning
+			_ui._title.visible = true
+	
 		#load available aircraft if they exist
 		if data.available.size() > 0:
 			#load previously available aircraft into the shop

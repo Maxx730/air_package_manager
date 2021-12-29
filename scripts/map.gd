@@ -1,6 +1,14 @@
 extends Node2D
 
-export(Gradient) var _daytime_color : Gradient
+export(NodePath) var _lighting : NodePath
+export(Color) var _night_color : Color
+export(Color) var _early_morning_color : Color
+export(Color) var _morning_color : Color
+export(Color) var _daytime_color : Color
+export(Color) var _dusk_color : Color
+
+export(float, 0, 1) var _night_alpha = 0.75
+export(float, 0, 1) var _day_alpha = 0.35
 
 onready var _screens = [
 	get_node("runway"),
@@ -12,8 +20,21 @@ onready var _screens = [
 func _enter_tree():
 	_globals._map = self
 
-func _set_lighting():
-	pass
+func _set_lighting(var _force : int = -1):
+	var _light = $lighting
+	var _hour = OS.get_time().hour if _force < 0 else _force
+	if _hour < 5 and _hour > -1:
+		_light.color = _night_color
+	elif _hour < 8 and _hour > 5:
+		_light.color = _early_morning_color
+	elif _hour < 10 and _hour > 8:
+		_light.color = _morning_color
+	elif _hour < 18 and _hour > 10:
+		_light.color = _daytime_color
+	elif _hour < 21 and _hour > 17:
+		_light.color = _dusk_color
+	elif _hour < 24 and  _hour > 20:
+		_light.color = _night_color
 
 func _hide_screens():
 	for _screen in _screens:
@@ -47,6 +68,7 @@ func _determine_aircraft_scene(state : int = 0):
 			_globals._main_camera._reset()
 			_ui._dashboard._show_current_aircraft()
 			_show_screen(2)
+			_globals._get_aircraft()._start_transit()
 		_globals.PLANE_STATE.DEPARTING:
 			_globals._main_camera._reset()
 			_show_screen(1)

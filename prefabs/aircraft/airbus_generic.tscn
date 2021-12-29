@@ -77,6 +77,7 @@ end_cap_mode = 2
 [node name="movement" type="Tween" parent="."]
 
 [node name="sprite" type="Sprite" parent="."]
+z_index = 7
 texture = ExtResource( 8 )
 
 [node name="hum" type="AudioStreamPlayer2D" parent="sprite"]
@@ -283,10 +284,11 @@ texture = ExtResource( 3 )
 
 [node name="exhaust" type="Node2D" parent="sprite"]
 visible = false
+z_as_relative = false
 
 [node name="exhaust" type="Particles2D" parent="sprite/exhaust"]
 position = Vector2( -17, -2 )
-z_index = -1
+z_index = 4
 amount = 24
 lifetime = 0.75
 process_material = SubResource( 8 )
@@ -294,7 +296,7 @@ texture = ExtResource( 5 )
 
 [node name="exhaust2" type="Particles2D" parent="sprite/exhaust"]
 position = Vector2( -27, 0 )
-z_index = -1
+z_index = 4
 amount = 24
 lifetime = 0.75
 process_material = SubResource( 8 )
@@ -302,7 +304,7 @@ texture = ExtResource( 5 )
 
 [node name="exhaust3" type="Particles2D" parent="sprite/exhaust"]
 position = Vector2( 27, 0 )
-z_index = -1
+z_index = 4
 amount = 24
 lifetime = 0.75
 process_material = SubResource( 8 )
@@ -310,7 +312,7 @@ texture = ExtResource( 5 )
 
 [node name="exhaust4" type="Particles2D" parent="sprite/exhaust"]
 position = Vector2( 17, -2 )
-z_index = -1
+z_index = 4
 amount = 24
 lifetime = 0.75
 process_material = SubResource( 8 )

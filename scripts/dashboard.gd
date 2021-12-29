@@ -12,8 +12,11 @@ onready var _choose_aircraft = $vertical/shadow/border/container/content
 onready var _next_craft = $vertical/shadow/border/container/switcher/next_aircraft
 onready var _prev_craft = $vertical/shadow/border/container/switcher/prev_aircraft
 onready var _depart = $vertical/shadow/border/container/switcher/horizontal/depart
-onready var _shop = $vertical/shadow/border/container/switcher/horizontal/open_shop
-onready var _location = $vertical/shadow/border/container/switcher/horizontal/open_location
+
+onready var _shop = $vertical/tab_buttons/action_buttons/market
+onready var _location = $vertical/tab_buttons/action_buttons/cargo
+onready var _customize = $vertical/tab_buttons/action_buttons/custom
+
 onready var _fuel_indicator = $vertical/shadow/border/container/content/vertical/VBoxContainer/values/HBoxContainer/_fuel_indicator
 
 var _fleet_idx = 0
@@ -37,6 +40,14 @@ func _open_location():
 	
 	if _globals._tutorial:
 		_ui._cargo_tutorial.visible = false
+
+func _open_customize():
+	if _ui._customize != null:
+		_ui._shade.visible = true
+		_ui._customize.visible = true
+		_ui._customize._fill_customize_data()
+
+
 
 func _show_switcher():
 	_switcher.visible = (_globals._fleet.size() > 0)
@@ -150,12 +161,7 @@ func _determine_switcher_content():
 	_prev_craft.disabled = _count < 2
 	_depart.disabled = _count < 1
 	_location.disabled = _count < 1
+	_customize.disabled = _count < 1
 	if _globals._plane != null:
 		_shop.disabled = _globals._plane._state == _globals.PLANE_STATE.IN_TRANSIT
 
-
-func _open_customize():
-	if _ui._customize != null:
-		_ui._shade.visible = true
-		_ui._customize.visible = true
-		_ui._customize._fill_customize_data()
