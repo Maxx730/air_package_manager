@@ -1,6 +1,6 @@
 extends MarginContainer
 
-onready var _location_title = $shade/outline/horizontal/info/location_title
+onready var _location_title = $vert/location_title
 
 func _next_location():
 	var _idx = _globals._locations.find(_globals._main_camera._target)

@@ -9,3 +9,6 @@ func _format_seconds(value, two_digit : bool = false):
 
 func _time_passed(start, end):
 	return end - start
+
+func _get_location(id : int):
+	return _globals._locations[id]

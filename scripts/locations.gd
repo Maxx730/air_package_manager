@@ -41,6 +41,8 @@ func _determine_actions():
 		_ui._confirm.visible = false
 
 func _cancel_departure():
+	$trip_line.clear_points()
+	_globals._plane._stops = []
 	_globals._plane._state = _globals.PLANE_STATE.LANDED
 	_globals._map._determine_aircraft_scene(_globals._plane._state)
 	_ui._determine_ui_actions(_globals._plane._state)

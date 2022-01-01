@@ -64,14 +64,17 @@ func _tick():
 		if _state == _globals.PLANE_STATE.IN_TRANSIT:
 			_state = _globals.PLANE_STATE.LANDED
 			var _loc = _globals._locations.find(_stops[0])
-			_globals._notifications._add_notification("Aircraft Landed!", 5.0)
+			_globals._notifications._add_notification("Aircraft Landed!", 1.5)
+			if _cargo.size() > 0:
+				_globals._exp._add_exp(_globals._exp._xp_for_flight(self, _globals._locations[_loc].position.distance_to(_globals._locations[_location].position)))
 			_location = _loc
 			_stops.remove(0)
 			
 			#destroy packages that have arrived at their destinations
 			for _item in _cargo:
 				if _item._dest == _loc:
-					print("delivered")
+					var _idx = _cargo.find(_item)
+					_cargo.remove(_idx)
 					_item.queue_free()
 			
 			#since the plane has arrived at its destination, we need to 
@@ -107,7 +110,7 @@ func _save():
 	#empty out arrays to prevent duplicates
 	_persist["stops"] = []
 	_persist["cargo"] = []
-	
+
 	for _stop in _stops:
 		_persist["stops"].append(_globals._locations.find(_stop))
 	

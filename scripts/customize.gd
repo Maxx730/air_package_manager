@@ -18,3 +18,4 @@ func _apply_customizations():
 	
 	_ui._dashboard._set_aircraft_info()
 	_globals._save()
+	_data._save_game()

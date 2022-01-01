@@ -68,7 +68,7 @@ func _determine_aircraft_scene(state : int = 0):
 			_globals._main_camera._reset()
 			_ui._dashboard._show_current_aircraft()
 			_show_screen(2)
-			_globals._get_aircraft()._start_transit()
 		_globals.PLANE_STATE.DEPARTING:
 			_globals._main_camera._reset()
 			_show_screen(1)
+			_globals._main_camera._target = _util._get_location(_globals._get_aircraft()._location)

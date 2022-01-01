@@ -30,6 +30,7 @@ var _switcher : HBoxContainer = null
 var _passed = -1
 var _notifications = null
 var _weather = null
+var _exp = null
 
 #scenes
 var _plane_instance = preload("res://prefabs/plane.tscn")
@@ -61,6 +62,7 @@ func _load_world():
 		if data.lastOpened != null:
 			_passed = _util._time_passed(data.lastOpened, OS.get_unix_time())
 		
+		_exp._load(data.exp)
 		# load the fleet if the player has already 
 		if data.fleet.size() > 0:
 			_spawn_fleet(data)
@@ -78,8 +80,14 @@ func _load_world():
 			_ui._title.visible = false
 			_map._hide_screens()
 			
-			_map._determine_aircraft_scene(_fleet[_fleet_idx]._state if _fleet_idx > -1 else 0)
-			_ui._determine_ui_actions(_fleet[_fleet_idx]._state if _fleet_idx > -1 else -1)
+			var _current = _fleet[_fleet_idx]
+			
+			if _current._state == _globals.PLANE_STATE.DEPARTING:
+				_current._state = _globals.PLANE_STATE.LANDED
+			
+			#based on the current aircraft show the correct scene
+			_map._determine_aircraft_scene(_current._state if _fleet_idx > -1 else -1)
+			_ui._dashboard._determine_aircraft_actions(_current._state if _fleet_idx > -1 else -1)
 		else:
 			#there are not any aircraft in the fleet so just show the title in the beginning
 			_ui._title.visible = true
@@ -89,12 +97,8 @@ func _load_world():
 			#load previously available aircraft into the shop
 			_generate_available(data)
 			_ui._shop._update_inventory()
-			
-			
-			#_globals._cash = data.cash
+			_globals._cash = data.cash
 
-			#_tutorial = false
-		
 		#load location's warehouse cargo
 		_load_locations(data)
 	else:
@@ -114,6 +118,7 @@ func _save():
 	_persist["lastOpened"] = OS.get_unix_time()
 	_persist["cash"] = _cash
 	_persist["fleet_idx"] = _fleet_idx
+	_persist["exp"] = _exp._save()
 	#empty arrays before saving them all to prevent duplicates
 	_persist["fleet"] = []
 	_persist["available"] = []
